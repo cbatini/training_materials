@@ -45,3 +45,64 @@ and a file with the sequences of some of Illumina primers and adapters (primers_
 
 :question: **Question:** Can you recognize the read data? Which is read 1 and which is read 2?   
 
+
+## Assess the quality of the data using FastQC
+**FastQC** is a quality control tool for high throughput sequence data.  
+
+You can launch FastQC with a graphical interface as follows:  
+```
+fastqc &
+```
+and upload your fastq files by using the File tab.  
+
+> NOTE: The ‘&’ at the end of the command puts FastQC into the background, 
+this means that the FastQC process will run independently of the shell, 
+leaving the terminal free and allowing you to continue to use it.  
+
+Otherwise you can use the command line interface and make an html report of the results as follows:  
+```
+fastqc <fastq_input_file>
+```
+
+Work your way through the analysis modules on the left hand side of the FastQC window/html, 
+using the FastQC documentation, familiarize yourself with what each module is showing. 
+Pay particular attention to the modules in the list below as they 
+will help direct the downstream trimming and adapter removal steps:  
+
+* Basic Statistics
+* Per Base Sequence Quality
+* Per Sequence Quality Scores
+* Overrepresented Sequences
+
+
+:question: **Questions**  
+
+* What is the total number of sequences in each of the paired end fastq files? Do both lanes provide the same sequencing output (same number of reads)?
+* What type of encoding is used in the fastq files?
+* What is the length of the sequences in the fastq files? Is the length the same for both lanes?
+* How is the quality of the reads across the pair? Is one read better than the other?
+* Is there any issue with the data?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
