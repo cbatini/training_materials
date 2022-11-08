@@ -141,6 +141,7 @@ The parameters used in this command are defined as follows:
 |   MINLEN:36 | delete reads trimmed below length MINLEN |
 
 :question: :question: :question: :question: **Questions**  
+
 * According to the Trimmomatic screen output, 
 what is the number and percentage of read pairs that ‘both survived’ adapter trimming?  
 * How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
@@ -197,7 +198,8 @@ The parameters used in this command are defined as follows:
 
 
 :question: :question: :question: :question: **Questions**  
-Check the final fastq files (lane*/s-7-1.trim.paired.fastq and lane*/s-7-2.trim.paired.fastq) 
+
+* Check the final fastq files (lane*/s-7-1.trim.paired.fastq and lane*/s-7-2.trim.paired.fastq) 
 with FastQC before proceeding to alignment.
 
 
@@ -211,7 +213,8 @@ length, the offset of the first sequence character in the file, the number of ch
 line and the number of bytes per line.  
 
 :question: :question: :question: :question: **Questions**  
-As you generate each index look at the files created using the `ls` command and options (e.g. `-lrth`)
+
+* As you generate each index look at the files created using the `ls` command and options (e.g. `-lrth`)
 
 **samtools index**
 ```
@@ -236,7 +239,8 @@ O=Saccharomyces_cerevisiae.EF4.68.dna.toplevel.dict
 ```
 
 :question: :question: :question: :question: **Questions**  
-Can you name the extensions of the files (e.g. ‘.txt’, ‘.sam’) 
+
+* Can you name the extensions of the files (e.g. ‘.txt’, ‘.sam’) 
 that have been created for indices by each tool?
 
 #### 2. Align reads to the reference genome using BWA  
@@ -309,7 +313,7 @@ you could just use the same commands as for lane 1, but changing the name of the
 
 We are using:  
 
-* the symbol `I` (pipe): it indicates that the output of the command before 
+* the symbol `|` (pipe): it indicates that the output of the command before 
 the symbol should be used as the input of the command after the symbol  
 * the symbol `-` (dash): it indicates the output of the previous command should read as standard input   
 * the symbols `&&` (ampersand): it indicates to run a command only if the previous one exited successfully 
@@ -323,7 +327,7 @@ samtools view -b - | samtools sort - -o lane2_sorted.bam  &&
 samtools index lane2_sorted.bam
 ```  
 
-#### 3. Merge BAM files per library  
+### 3. Merge BAM files per library  
 We will use picard MergeSamFiles.  
 ```
 picard MergeSamFiles INPUT=lane1_sorted.bam INPUT=lane2_sorted.bam OUTPUT=library.bam
@@ -333,7 +337,69 @@ picard MergeSamFiles INPUT=lane1_sorted.bam INPUT=lane2_sorted.bam OUTPUT=librar
 
 * Index the merged bam file using samtools.  
 * If you wanted/had to convert your library bam file into cram format, 
-which samtools command would you use? 
+which samtools command would you use?  
+
+## BAM refinement  
+
+BAM refinement has three steps:  
+
+1. local realignment  
+2. base quality recalibration  
+3. duplicate removal  
+
+We will not run the first two steps in this practical, because:  
+
+* local realignment is not included anymore in the best practice by GATK 
+(and is not available as a tool in GATK 4) because the haplotype-based variant 
+callers will take care of this issue during variant calling;  
+* base quality recalibration is a slow process that takes time to run 
+and requires a good list of variant sites for the species in consideration 
+(e.g. for humans the latest version of dbSNP)  
+You can find more information and command line examples [here](https://gatkforums.broadinstitute.org/gatk/discussion/44/base-quality-score-recalibration-bqsr).   
+In the same page there is a paragraph with suggestions on how to proceed when 
+you don’t have a good catalog of variant sites for your species.  
+If you want to run local realignment you will have to use a previous version of GATK. 
+You can find information on how to run it in GATK 3.8 [here](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_indels_IndelRealigner.php).   
+
+**Duplicate removal with picard**
+PCR duplicates may confound coverage estimates 
+and amplify the effects of mis-calls. We will remove duplicates 
+using picard MarkDuplicates. As you may have guessed, 
+picard doesn’t actually remove the duplicates, 
+but it marks the reads in the bam by using the bitwise flag.  
+```
+picard MarkDuplicates INPUT=library.bam OUTPUT=library_final.bam METRICS_FILE=dupl_metrics.txt
+```
+:question: :question: :question: :question: **Questions**  
+
+* Index library_final.bam file  
+
+
+## BAM QC with qualimap  
+**Qualimap** is a tool for quick BAM QC and it works with DNA-seq, 
+RNA-seq and ChiP-seq data. It has a graphical interface which you can run by typing:  
+```
+qualimap &
+```  
+
+You can then proceed to upload your bam file by selecting a New Analysis in the File panel,    
+or you can produce an html report for your final bam:  
+```
+qualimap bamqc -bam library_final.bam -outdir qualimap_report
+```  
+
+If you are interested about other options: http://qualimap.bioinfo.cipf.es/doc_html/command_line.html 
+
+:question: :question: :question: :question: **Questions**  
+Explore the different analyses that Qualimap has run and try and answer the 
+following questions to understand the quality of your alignments.  
+
+* What's the percentage of mapped reads?
+* What's the percentage of duplicated reads? 
+* What’s the average coverage? Is this equally distributed across chromosomes?
+* What’s the fraction of the reference to have at least 2X coverage? and 4X?
+* What’s the average mapping quality? Is this equally distributed across chromosomes?
+
 
 
 
