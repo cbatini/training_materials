@@ -46,5 +46,5 @@ and a file with the sequences of some of Illumina primers and adapters (primers_
 > **Question:** Can you recognize the read data? Which is read 1 and which is read 2?  
 
 
-<font size=6> <span style="color: blue"> **Question:** Can you recognize the read data? Which is read 1 and which is read 2? </font> </span> 
+:bulb: **Question:** Can you recognize the read data? Which is read 1 and which is read 2?   
 
