@@ -196,12 +196,47 @@ The parameters used in this command are defined as follows:
 
 
 
-:question: :question: :question: :question: **Questions** 
+:question: :question: :question: :question: **Questions**  
 Check the final fastq files (lane*/s-7-1.trim.paired.fastq and lane*/s-7-2.trim.paired.fastq) 
 with FastQC before proceeding to alignment.
 
 
+## Alignment to a reference genome  
+#### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard  
+Indices are necessary for quick access to specific information in very large files. 
+Here we will create indices for the Saccharomyces reference genome for tools we will 
+use downstream in the pipeline. 
+For example the samtools index file, `ref_name.fai`, stores records of sequence identifier, 
+length, the offset of the first sequence character in the file, the number of characters per 
+line and the number of bytes per line.
+:question: :question: :question: :question: **Questions**  
+As you generate each index look at the files created using the `ls` command and options (e.g. `-lrth`)
 
+**samtools index**
+```
+samtools faidx Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa
+```
+
+**bwa index**
+```
+bwa index -a is Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa
+```
+`-a is`	Sets the algorithm to be used to construct a suffix array to the IS 
+linear-time algorithm. It requires 5.37N memory where N is the size of the database. 
+IS is moderately fast, but does not work with database larger than 2GB. 
+IS is the default algorithm due to its simplicity. 
+For the whole human genome you would need to use the algorithm implemented in BWT-SW. 
+
+**picard dictionary**
+```
+picard CreateSequenceDictionary \
+R=Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+O=Saccharomyces_cerevisiae.EF4.68.dna.toplevel.dict
+```
+
+:question: :question: :question: :question: **Questions**  
+Can you name the extensions of the files (e.g. ‘.txt’, ‘.sam’) 
+that have been created for indices by each tool?
 
 
 
