@@ -43,7 +43,10 @@ You should now find a folder called **VariantCalling** containing read data
 (in subfolders lane1, lane2), a reference genome (Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa) 
 and a file with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
 
-:question: :question: :question: :question: **Question:** Can you recognize the read data? Which is read 1 and which is read 2?   
+:question: :question: :question: :question: **Questions:**  
+
+* Can you recognize the read data? 
+* Which is read 1 and which is read 2?   
 
 
 ## Assess the quality of the data using FastQC
@@ -83,6 +86,63 @@ will help direct the downstream trimming and adapter removal steps:
 * How is the quality of the reads across the pair? Is one read better than the other?
 * Is there any issue with the data?
 
+## Use Trimmomatic to remove primer and adapter sequences   
+
+**Trimmomatic** is a java tool for performing a range of trimming tasks 
+on Illumina paired end and single end read data. The manual can be found [here](https://github.com/usadellab/Trimmomatic/blob/main/README.md). 
+
+Go back to the overrepresented sequences module of FastQC. 
+This is where FastQC would tell you if a significant proportion (>1%) 
+of your reads are contaminated with adapter sequences. As you can see from 
+the *Possible Source* column, FastQC has found a number of reads contaminated 
+with different Illumina primer and adapter sequences, so we will run Trimmomatic to remove them.  
+
+Trimmomatic needs a fasta file containing the sequences you want to trim from your data; 
+this can be created by using fasta files provided that contain the standard Illumina adapter 
+and primer sequences or it can be customised. In this case we will use the prepared 
+`primers_adapters.fa` file that contains the sequences indicated in FastQC and their 
+reverse complement sequences.  
+
+for lane1
+```
+trimmomatic PE -phred33 -threads 1 -trimlog \
+lane1/trimm_logfile lane1/s-7-1.fastq lane1/s-7-2.fastq \
+lane1/s-7-1.paired.fastq lane1/s-7-1.unpaired.fastq \
+lane1/s-7-2.paired.fastq lane1/s-7-2.unpaired.fastq \
+ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36
+```
+
+for lane2
+```
+trimmomatic PE -phred33 -threads 1 -trimlog \
+lane2/trimm_logfile lane2/s-7-1.fastq lane2/s-7-2.fastq \
+lane2/s-7-1.paired.fastq lane2/s-7-1.unpaired.fastq \
+lane2/s-7-2.paired.fastq lane2/s-7-2.unpaired.fastq \
+ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36
+```
+
+
+The parameters used in this command are defined as follows:  
+| Option | meaning |
+|-----------------------------------|---------------------------------------------------------------|
+| PE | data is paired end |
+| -phred33 | quality scores are 33 offset |
+| -threads 1 | number of threads to use |
+-trimlog lane1/trimm_logfile	name of logfile for summary information
+lane1/s-7-1.fastq		name of input fastq file for left reads
+lane1/s-7-2.fastq		name of input fastq file for right reads
+lane1/s-7-1.paired.fastq	paired trimmed output fastq file for left reads
+lane1/s-7-1.unpaired.fastq	unpaired trimmed output fastq file for left reads
+lane1/s-7-2.paired.fastq	paired trimmed output fastq file for right reads
+lane1/s-7-2.unpaired.fastq	unpaired trimmed output fastq file for right reads
+ILLUMINACLIP			parameters for the adapter clipping
+	primers_adapters.fa 	text file of adapter sequences to search for
+:2:30:10 		adapter-read alignment settings - see manual for explanation
+MINLEN:36			delete reads trimmed below length MINLEN
+
+Questions:
+According to the Trimmomatic screen output, what is the number and percentage of read pairs that ‘both survived’ adapter trimming?
+How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
 
 
 
