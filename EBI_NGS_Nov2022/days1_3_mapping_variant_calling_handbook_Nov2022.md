@@ -204,7 +204,7 @@ with FastQC before proceeding to alignment.
 
 
 ## Alignment to a reference genome  
-#### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard  
+### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard  
 Indices are necessary for quick access to specific information in very large files. 
 Here we will create indices for the Saccharomyces reference genome for tools we will 
 use downstream in the pipeline. 
@@ -243,7 +243,7 @@ O=Saccharomyces_cerevisiae.EF4.68.dna.toplevel.dict
 * Can you name the extensions of the files (e.g. ‘.txt’, ‘.sam’) 
 that have been created for indices by each tool?
 
-#### 2. Align reads to the reference genome using BWA  
+### 2. Align reads to the reference genome using BWA  
 **BWA** uses the burrows wheeler algorithm to compress data and 
 efficiently parse the reference for sequence matches. 
 `bwa mem` is the latest bwa algorithm and is recommended for 
@@ -361,7 +361,7 @@ you don’t have a good catalog of variant sites for your species.
 If you want to run local realignment you will have to use a previous version of GATK. 
 You can find information on how to run it in GATK 3.8 [here](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_indels_IndelRealigner.php).   
 
-**Duplicate removal with picard**
+**Duplicate removal with picard**  
 PCR duplicates may confound coverage estimates 
 and amplify the effects of mis-calls. We will remove duplicates 
 using picard MarkDuplicates. As you may have guessed, 
@@ -401,6 +401,61 @@ following questions to understand the quality of your alignments.
 * What’s the average mapping quality? Is this equally distributed across chromosomes?
 
 
+## BAM QC with individual software tools  
+**If it is too late, do not worry about this part and proceed to BAM visualization.**   
+
+What follows is one of the possible ways of doing some of the things 
+you have seen in the plots produced by qualimap - some of the commands 
+below might be useful when you want to check something specific about your bam.  
+
+**Look at duplication metrics file from bam refinement**
+```
+gedit dupl_metrics.txt &
+```
+
+:question: :question: :question: :question: **Questions**  
+
+* What's the percentage of duplicated reads?   
+
+
+**Get samtools flagstat metrics**
+```
+samtools flagstat library.bam		
+```
+
+```
+samtools flagstat library_final.bam	
+```
+
+:question: :question: :question: :question: **Questions**  
+
+* Can you see any difference between samtools flagstat output before and after refinement?
+
+
+**This part includes using R, do not proceed if you are not familiar with R**
+ (otherwise pair up with someone who can use R).  
+ 
+Look at the coverage per position in mitochondria.
+```
+samtools depth -a -r Mito:1-85779 library_final.bam > mito_coverage
+```
+
+:question: :question: :question: :question: **Questions**  
+
+* Add options `-q` and `-Q` to calculate the coverage per position using a 
+minimum BQ 20 and a minimum MQ 50 (do you know how and where to specify this in the command line?).   
+* How is quality affecting coverage distribution? Compare the outputs in R:   
+	+ check average coverage  
+	+ plot coverage per position  
+	+ check how many positions have coverage 0, or equal to and greater than 4 
+	(or any other threshold you are curious about)  
+
+Options used:    
+                                                                                                                                                                                                                                                             
+* `-a`: Output all positions (including those with zero depth)  
+* `-r`: Only report depth in specified region  
+* `-q`: Only count reads with base quality greater than INT  
+* `-Q`: Only count reads with mapping quality greater than INT
 
 
 
