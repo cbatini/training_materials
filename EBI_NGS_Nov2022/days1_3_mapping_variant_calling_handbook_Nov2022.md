@@ -458,6 +458,35 @@ Options used:
 * `-Q`: Only count reads with mapping quality greater than INT
 
 
+## BAM visualisation  
+We will extract mtDNA from final the BAM to have a smaller file to visualise.
+```
+samtools view -bh -o mito.bam library_final.bam Mito
+```  
+
+:question: :question: :question: :question: **Questions**  
+
+* Index the mito bam file  
+* Do you know why we have used Mito to extract the mtDNA? Check your dictionary or your bam header.  
+
+
+We will use IGV to visualise our alignment and, as it is installed on this container, you can just type:
+```
+igv &
+```  
+
+However, it is good to know that you can use the java web start version of IGV.  
+Follow this link: https://www.broadinstitute.org/software/igv/download  
+Register, and you’ll find the IGV Java Web start. Launch IGV with 750 MB.  
+
+**In both cases, be patient when you use IGV!**  
+
+You will see that the default reference genome loaded is Human hg19. 
+Load your reference genome (check Genomes - Load Genome from File) 
+and then your bam file (check File - Load from File).  
+
+You can try to load the bam file for the whole alignment 
+(library_final.bam) but it may take some time.
 
 
 
