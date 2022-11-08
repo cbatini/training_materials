@@ -44,7 +44,7 @@ You should now find a folder called **VariantCalling** containing read data
 and a file with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
 
 ***
-**Question:** Can you recognize the read data? Which is read 1 and which is read 2?
+#### **Question:** Can you recognize the read data? Which is read 1 and which is read 2?
 ***
 
 
