@@ -208,7 +208,8 @@ Here we will create indices for the Saccharomyces reference genome for tools we 
 use downstream in the pipeline. 
 For example the samtools index file, `ref_name.fai`, stores records of sequence identifier, 
 length, the offset of the first sequence character in the file, the number of characters per 
-line and the number of bytes per line.
+line and the number of bytes per line.  
+
 :question: :question: :question: :question: **Questions**  
 As you generate each index look at the files created using the `ls` command and options (e.g. `-lrth`)
 
@@ -237,6 +238,103 @@ O=Saccharomyces_cerevisiae.EF4.68.dna.toplevel.dict
 :question: :question: :question: :question: **Questions**  
 Can you name the extensions of the files (e.g. ‘.txt’, ‘.sam’) 
 that have been created for indices by each tool?
+
+#### 2. Align reads to the reference genome using BWA  
+**BWA** uses the burrows wheeler algorithm to compress data and 
+efficiently parse the reference for sequence matches. 
+`bwa mem` is the latest bwa algorithm and is recommended for 
+high-quality data as it is faster and more accurate than previous ones.  
+
+**Align reads using bwa mem**   
+```
+bwa mem -R '@RG\tID:1\tLB:library\tPL:Illumina\tPU:lane1\tSM:yeast' \
+Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+lane1/s-7-1.trim.paired.fastq lane1/s-7-2.trim.paired.fastq > lane1.sam
+```
+
+Options used (see bwa manual for more options):  
+
+* `-R`: Add read group. A read group is a set of reads that were 
+generated from a single run/lane/chip of a sequencing instrument. 
+By adding read groups to a bam file we are adding a line in the bam header specifying a number of tags. |
+
+The read group tags used here are:  
+
+| tag | meaning |  
+| ------- | ----------------------------------- |  
+| ID | read group ID |  
+| LB | read group library |  
+| PL | read group platform (e.g Illumina, Ion Torrent, etc) |  
+| PU | read group platform unit (e.g. flowcell lane, chip barcode, etc) |  
+| SM | read group sample name |  
+
+You can find more information about read groups [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups)   
+
+
+
+**Convert the new sam file to bam format (bam is the binary version of the sam format)**
+```
+samtools view -b lane1.sam -o lane1.bam
+```
+
+Options used:  
+
+* `-b`: output a bam file  
+* `-o`: output file  
+
+**Sort the bam file**
+```
+samtools sort lane1.bam -o lane1_sorted.bam
+```
+
+Samtools sorts alignments by their leftmost chromosomal coordinates. 
+You can sort by read name instead using `-t` option.  
+
+**Index the sorted bam for fast access**
+```
+samtools index lane1_sorted.bam
+```
+
+:question: :question: :question: :question: **Questions**  
+
+* Can you guess the extension of the index file?  
+* Have a look at the header of your new bam file (`samtools view -H lane1_sorted.bam`)  
+	+ How many chromosomes are present and which version of the SAM is it?  
+	+ Can you see the read group line?  
+* Use unix command more on your SAM file and check what is after the header…  
+
+
+For lane 2 we will pipe the commands (but keep in mind that you don’t have to - 
+you could just use the same commands as for lane 1, but changing the name of the files).
+
+We are using:  
+
+* the symbol `I` (pipe): it indicates that the output of the command before 
+the symbol should be used as the input of the command after the symbol  
+* the symbol `-` (dash): it indicates the output of the previous command should read as standard input   
+* the symbols `&&` (ampersand): it indicates to run a command only if the previous one exited successfully 
+
+```
+bwa mem -R \
+'@RG\tID:2\tLB:library\tPL:Illumina\tPU:lane2\tSM:yeast' \
+Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+lane2/s-7-1.trim.paired.fastq lane2/s-7-2.trim.paired.fastq | \
+samtools view -b - | samtools sort - -o lane2_sorted.bam  && 
+samtools index lane2_sorted.bam
+```  
+
+#### 3. Merge BAM files per library  
+We will use picard MergeSamFiles.  
+```
+picard MergeSamFiles INPUT=lane1_sorted.bam INPUT=lane2_sorted.bam OUTPUT=library.bam
+```   
+
+:question: :question: :question: :question: **Questions**  
+
+* Index the merged bam file using samtools.  
+* If you wanted/had to convert your library bam file into cram format, 
+which samtools command would you use? 
+
 
 
 
