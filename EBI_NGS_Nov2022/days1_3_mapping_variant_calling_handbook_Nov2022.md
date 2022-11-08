@@ -123,26 +123,82 @@ ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36
 
 
 The parameters used in this command are defined as follows:  
-| Option | meaning |
+| option | meaning |
 |-----------------------------------|---------------------------------------------------------------|
 | PE | data is paired end |
 | -phred33 | quality scores are 33 offset |
 | -threads 1 | number of threads to use |
--trimlog lane1/trimm_logfile	name of logfile for summary information
-lane1/s-7-1.fastq		name of input fastq file for left reads
-lane1/s-7-2.fastq		name of input fastq file for right reads
-lane1/s-7-1.paired.fastq	paired trimmed output fastq file for left reads
-lane1/s-7-1.unpaired.fastq	unpaired trimmed output fastq file for left reads
-lane1/s-7-2.paired.fastq	paired trimmed output fastq file for right reads
-lane1/s-7-2.unpaired.fastq	unpaired trimmed output fastq file for right reads
-ILLUMINACLIP			parameters for the adapter clipping
-	primers_adapters.fa 	text file of adapter sequences to search for
-:2:30:10 		adapter-read alignment settings - see manual for explanation
-MINLEN:36			delete reads trimmed below length MINLEN
+| -trimlog lane1/trimm_logfile | name of logfile for summary information |
+| lane1/s-7-1.fastq | name of input fastq file for left reads |
+| lane1/s-7-2.fastq | name of input fastq file for right reads |
+| lane1/s-7-1.paired.fastq | paired trimmed output fastq file for left reads |
+| lane1/s-7-1.unpaired.fastq | unpaired trimmed output fastq file for left reads |
+| lane1/s-7-2.paired.fastq | paired trimmed output fastq file for right reads |
+| lane1/s-7-2.unpaired.fastq | unpaired trimmed output fastq file for right reads |
+| ILLUMINACLIP | parameters for the adapter clipping |
+|   primers_adapters.fa | text file of adapter sequences to search for |
+|   :2:30:10 | adapter-read alignment settings - see manual for explanation |
+|   MINLEN:36 | delete reads trimmed below length MINLEN |
 
-Questions:
-According to the Trimmomatic screen output, what is the number and percentage of read pairs that ‘both survived’ adapter trimming?
-How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
+:question: :question: :question: :question: **Questions**  
+* According to the Trimmomatic screen output, 
+what is the number and percentage of read pairs that ‘both survived’ adapter trimming?  
+* How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
+
+
+## Use Trimmomatic to trim low quality bases
+The FastQC *Per Base Sequence Quality* module has already told us that there could be 
+some issues with the quality scores of the last few bases of the reads, especially for 
+read2 in both lanes. We will use Trimmomatic to trim poor quality bases from the 3’ 
+end of the reads. Trimmomatic also checks the 5’ end for poor quality bases. 
+The command below will carry out the trimming on the adapter trimmed fastq files we created above.
+
+for lane1
+```
+trimmomatic PE -phred33 -threads 1 -trimlog \
+lane1/trimm_logfile2 \
+lane1/s-7-1.paired.fastq lane1/s-7-2.paired.fastq \
+lane1/s-7-1.trim.paired.fastq lane1/s-7-1.trim.unpaired.fastq \
+lane1/s-7-2.trim.paired.fastq lane1/s-7-2.trim.unpaired.fastq \
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15  MINLEN:36
+```
+
+for lane2
+```
+trimmomatic PE -phred33 -threads 1 -trimlog \
+lane2/trimm_logfile2 \
+lane2/s-7-1.paired.fastq lane2/s-7-2.paired.fastq \
+lane2/s-7-1.trim.paired.fastq lane2/s-7-1.trim.unpaired.fastq \
+lane2/s-7-2.trim.paired.fastq lane2/s-7-2.trim.unpaired.fastq \
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15  MINLEN:36
+```
+
+
+
+
+The parameters used in this command are defined as follows:  
+| option | meaning |
+|-----------------------------------|---------------------------------------------------------------|
+| PE | data is paired end |
+| -phred33 | quality scores are 33 offset |
+| -threads 1 | number of threads to use |
+| -trimlog lane1/trimm_logfile2 | name of logfile for summary information |
+| lane1/s-7-1.paired.fastq | name of input adapter trimmed left fastq file |
+| lane1/s-7-2.paired.fastq | name of input adapter trimmed right fastq file |
+| lane1/s-7-1.trim.paired.fastq | paired trimmed output fastq file for left reads |
+| lane1/s-7-1.trim.unpaired.fastq | unpaired trimmed output fastq file for left reads |
+| lane1/s-7-1.trim.paired.fastq | paired trimmed output fastq file for right reads |
+| lane1/s-7-1.trim.unpaired.fastq | unpaired trimmed output fastq file for right reads |
+| LEADING:3 | Trim 5’ bases with quality score < 3 |
+| TRAILING:3 | Trim 3’ bases with quality score < 3 |
+| SLIDINGWINDOW:4:15 | sliding window trimming - see manual for explanation |
+| MINLEN:36 | delete reads trimmed below length MINLEN |
+
+
+
+:question: :question: :question: :question: **Questions** 
+Check the final fastq files (lane*/s-7-1.trim.paired.fastq and lane*/s-7-2.trim.paired.fastq) 
+with FastQC before proceeding to alignment.
 
 
 
