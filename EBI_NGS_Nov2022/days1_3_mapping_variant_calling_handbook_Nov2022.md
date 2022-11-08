@@ -43,7 +43,7 @@ You should now find a folder called **VariantCalling** containing read data
 (in subfolders lane1, lane2), a reference genome (Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa) 
 and a file with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
 
-:question: **Question:** Can you recognize the read data? Which is read 1 and which is read 2?   
+:question: :question: :question: :question: **Question:** Can you recognize the read data? Which is read 1 and which is read 2?   
 
 
 ## Assess the quality of the data using FastQC
@@ -75,7 +75,7 @@ will help direct the downstream trimming and adapter removal steps:
 * Overrepresented Sequences
 
 
-:question: **Questions**  
+:question: :question: :question: :question: **Questions**  
 
 * What is the total number of sequences in each of the paired end fastq files? Do both lanes provide the same sequencing output (same number of reads)?
 * What type of encoding is used in the fastq files?
