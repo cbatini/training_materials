@@ -28,12 +28,12 @@ Characteristics of the experiment:
 
 A tar archive containing all the files needed for this practical (EBI_NGSBioinfo_Nov2022.tar) 
 is available in the shared directory (/media/penelopeprime/GenomeBioinformaticsNov2022/Day1/).  
-Create a directory to use for this practical, move into it using ```cd``` and copy the tar archive there using this command:  
+Create a directory to use for this practical, move into it using `cd` and copy the tar archive there using this command:  
 ```
 cp /media/penelopeprime/chiara/EBI_NGSBioinfo_Feb2021.tar .
 ```
 
-**Please DO NOT work in the shared directory. If unsure, use ```pwd``` to check in which directory you are.**  
+**Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
 You can then open this file using the command:  
 ```
 tar -xvf EBI_NGSBioinfo_Feb2021.tar
