@@ -43,8 +43,8 @@ You should now find a folder called **VariantCalling** containing read data
 (in subfolders lane1, lane2), a reference genome (Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa) 
 and a file with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
 
-***
+****
 Question: Can you recognize the read data? Which is read 1 and which is read 2?
-***
+****
 
 
