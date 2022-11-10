@@ -309,6 +309,8 @@ samtools index lane1_sorted.bam
 * Use unix command more on your SAM file and check what is after the header…  
 
 
+# END OF DAY1
+
 For lane 2 we will pipe the commands (but keep in mind that you don’t have to - 
 you could just use the same commands as for lane 1, but changing the name of the files).
 
@@ -489,6 +491,7 @@ and then your bam file (check File - Load from File).
 You can try to load the bam file for the whole alignment 
 (library_final.bam) but it may take some time.
 
+# END OF DAY2
 
 ## Variant calling  
 Once the alignments have been refined, SNPs and INDELs differences 
