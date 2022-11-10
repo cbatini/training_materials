@@ -40,8 +40,9 @@ tar -xvf EBI_NGSBioinfo_Nov2022.tar
 ```
 
 You should now find a folder called **VariantCalling** containing read data 
-(in subfolders lane1, lane2), a reference genome (Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa) 
-and a file with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
+(in subfolders lane1, lane2), a reference genome (Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa), 
+a file with the coordinates of the yeast mtDNA (mito.intervals), and a file 
+with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
 
 :question: :question: :question: :question: **Questions:**  
 
@@ -487,6 +488,91 @@ and then your bam file (check File - Load from File).
 
 You can try to load the bam file for the whole alignment 
 (library_final.bam) but it may take some time.
+
+
+## Variant calling  
+Once the alignments have been refined, SNPs and INDELs differences 
+between the data and the reference genome can be identified and qualified. 
+GATK, samtools and Freebayes are popular softwares to carry out this analysis. 
+Here we will use GATK 4.0 HaplotypeCaller.  
+
+
+:question: :question: :question: :question: **Questions**  
+
+* Are the reference index and dictionary in the same directory as the reference file?  
+
+If you are starting your analyses directly from a bam file created by someone else, 
+make sure you have the same reference genome they have used for the alignment. 
+It is essential that the contigs in the reference are the same (in number, length and ID) 
+to those used in the bam file.  
+
+
+**GATK HaplotypeCaller**  
+Call raw variants with no filters on chromosome 1.  
+
+
+:question: :question: :question: :question: **Questions**  
+
+* what is the ID for this chromosome?  
+
+```
+gatk HaplotypeCaller \
+-R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+-I library_final.bam \
+-L I \
+-O gatk_variants_raw_I.vcf 
+```
+
+Call raw variants on chromosome 1 using a filter of minimum base quality 20 and minimum mapping quality 50.  
+```
+gatk HaplotypeCaller \
+-R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+-I library_final.bam \
+-L I \
+-mbq 20 \
+--minimum-mapping-quality 50 \
+-O gatk_variants_raw_I_bq20_mq50.vcf 
+```
+
+Options used:  
+
+* `-R`: path to the reference genome  
+* `-I`:	path to input file  
+* `-O`:	path (and name) to the output file  
+* `-L`:	specify the genomic intervals on which to operate; 
+you can use samtools-style intervals either explicitly on the command line 
+(e.g. -L chr1 or -L chr1:100-200) or by loading in a file containing 
+a list of intervals (e.g. -L myFile.intervals)  
+* `-mbq`: minimum base quality required to consider a base for calling  
+* `--minimum-mapping-quality`: minimum read mapping quality required to consider a read for calling  
+
+
+:question: :question: :question: :question: **Questions**  
+
+* what's the difference (if any) between the options for defining minimum BQ and MQ thresholds?  
+* have a look at the vcf file and familiarise yourself with it  
+* how many variants have been called in each case? 
+Can you explain the difference? (hint: you can use `grep` and options to count the variants in the vcf files)  
+* check the GATK HaplotypeCaller [user manual](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php) to see other options.  
+
+
+Now we are going to extract only SNPs from both vcf files.  
+```
+gatk SelectVariants \
+-R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+--variant gatk_variants_raw_I.vcf \
+-O gatk_variants_raw_I_SNP.vcf \
+--select-type SNP 
+```
+
+:question: :question: :question: :question: **Questions**  
+
+* Repeat this command on the second vcf file.  
+* Can you tell how many INDELs were called in each case?  
+* And has the BQ20+MQ50 filter changed this picture? 
+
+
+
 
 
 
