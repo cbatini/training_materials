@@ -569,7 +569,136 @@ gatk SelectVariants \
 
 * Repeat this command on the second vcf file.  
 * Can you tell how many INDELs were called in each case?  
-* And has the BQ20+MQ50 filter changed this picture? 
+* And has the BQ20+MQ50 filter changed this picture?   
+
+
+**FreeBayes**  
+We have seen that the BQ20+MQ50 filter has an impact on the variants called, 
+so we will use this filter for the variant calling with FreeBayes.  
+
+Call raw variants using a filter of minimum base quality 20 and minimum mapping quality 50.  
+```
+freebayes \
+-q 20 \
+-m 50 \
+-u \
+-f Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa library_final.bam \
+-r I > freebayes_variants_raw_I_bq20_mq50.vcf
+```
+
+Options used:  
+                                                                                                                                                                                                                                                                 
+* `-f`: path to the reference genome  
+* `-q`: exclude alleles from analysis if their supporting 
+base quality is less than the number specified (20 in our case)  
+* `-m`: exclude alignments from analysis if they have 
+a mapping quality less than the number specified
+
+
+:question: :question: :question: :question: **Questions**  
+
+* Check the FreeBayes user manual to see other options. 
+	+ Can you tell why we have used the `-u` option?  
+
+**Keep in mind:** This was a pragmatic choice for this practical, however, 
+as per FreeBayes manual page, this is **NOT** the best practice!  
+See section ‘Getting the best results’ [here](https://github.com/ekg/freebayes).  
+
+
+:question: :question: :question: :question: **Questions**  
+
+* Select SNPs from the FreeBayes vcf file using gatk SelectVariants.  
+
+
+**Compare the GATK HaplotypeCaller and the FreeBayes vcf files**
+```
+vcftools \
+--vcf gatk_variants_raw_I_bq20_mq50_SNP.vcf \
+--diff freebayes_variants_raw_I_bq20_mq50_SNP.vcf \
+--diff-site \
+--out compare
+```
+
+Use the `more` command to view the compare file.  
+The file column headers are as follows: CHROM POS1 POS2 IN_FILE REF1 REF2 ALT1 ALT2. 
+The 4th column (IN_FILE) indicates if the SNP was found 
+in both vcf files (B) or the first vcf file (1) or the second vcf file(2).  
+
+
+:question: :question: :question: :question: **Questions**  
+
+* How many SNPs are present in both gatk and freebayes?  
+* How many are present in only 1?  
+* The compare.log file may be useful. See if you can also get the answer from using a `grep` command (hint: option `-w` may be useful here; do you agree?).  
+
+
+
+
+## Variant filtering  
+We will use VCFtools to filter variants from our vcf files. 
+The aim of VCFtools is to provide easily accessible methods 
+for working with complex genetic variation data in the form of VCF files. 
+It allows to filter vcf files as well as to manipulate them in many useful ways.  
+
+We will apply the following filters in two different ways:  
+
+* d=3: minimum coverage 3  
+* Q=20: minimum QUAL 20  
+
+**This uses DP in the INFO field!**  
+```
+cat gatk_variants_raw_I_bq20_mq50_SNP.vcf | vcf-annotate -f d=3/Q=20 > gatk_variants_I_flt.vcf
+```
+
+Now use vcftools again with the same filters but with a different command.  
+
+**This uses DP in the FORMAT field!**  
+```
+vcftools \
+--vcf gatk_variants_raw_I_bq20_mq50_SNP.vcf \
+--minDP 3 \
+--minQ 20 \
+--out gatk_variants_I_flt2 \
+--recode \
+--recode-INFO-all
+```
+
+As it is working on the data per sample, it substitutes the individual genotypes 
+with missing data if they don't pass the filter [./. instead of 0/0 or 0/1 or 1/1].  
+
+
+:question: :question: :question: :question: **Questions**  
+
+* Have a look at the first few variants to understand the different outputs 
+of these two commands. 
+	+ Can you see any difference?  
+	+ Can you appreciate how the two filtering commands behaved?  
+* How many variants passed the filters in each case?  
+	+ Can you explain the difference?   
+	+ To answer this question it may be helpful to exclude 
+	variants with missing data for the second output using this command:
+	```
+	vcftools \
+	--vcf gatk_variants_I_flt2.recode.vcf \
+	--max-missing 1 \
+	--out gatk_variants_I_flt2_nomissing \
+	--recode \
+	--recode-INFO-all
+	```
+	+ Can you understand what this command does?  
+
+EXTRA  
+There are a couple of extra activities you may want to try at this point:  
+
+* you could compare your results so far with another caller:  
+	+ Can you work out the correct command to run samtools mpileup + bcftools call?  
+	+ You can then compare the vcf output with what we have done so 
+	far to explore the difference (vcftools).  
+* you could filter your vcf files on additional metrics using vcftools:  
+	+ What other metrics would you add and why? Discuss this win your breakout room.  
+	+ Can you write the command for filtering variants in gatk?  
+
+
 
 
 
