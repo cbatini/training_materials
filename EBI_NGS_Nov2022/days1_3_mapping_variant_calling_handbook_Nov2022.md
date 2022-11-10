@@ -36,7 +36,7 @@ cp /media/penelopeprime/GenomeBioinformaticsNov2022/Day1/EBI_NGSBioinfo_Nov2022.
 **Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
 You can then open this file using the command:  
 ```
-tar -xvf EBI_NGSBioinfo_Feb2021.tar
+tar -xvf EBI_NGSBioinfo_Nov2022.tar
 ```
 
 You should now find a folder called **VariantCalling** containing read data 
