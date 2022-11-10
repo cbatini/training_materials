@@ -30,7 +30,7 @@ A tar archive containing all the files needed for this practical (EBI_NGSBioinfo
 is available in the shared directory (/media/penelopeprime/GenomeBioinformaticsNov2022/Day1/).  
 Create a directory to use for this practical, move into it using `cd` and copy the tar archive there using this command:  
 ```
-cp /media/penelopeprime/chiara/EBI_NGSBioinfo_Feb2021.tar .
+cp /media/penelopeprime/GenomeBioinformaticsNov2022/Day1/EBI_NGSBioinfo_Feb2021.tar .
 ```
 
 **Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
