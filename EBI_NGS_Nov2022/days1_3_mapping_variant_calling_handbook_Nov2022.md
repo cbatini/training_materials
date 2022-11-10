@@ -28,7 +28,7 @@ Characteristics of the experiment:
 
 A tar archive containing all the files needed for this practical (EBI_NGSBioinfo_Nov2022.tar) 
 is available in the shared directory (/media/penelopeprime/GenomeBioinformaticsNov2022/Day1/).  
-Create a directory to use for this practical, move into it using `cd` and copy the tar archive there using this command:  
+**Create a directory to use for this practical**, move into it using `cd` and copy the tar archive there using this command:  
 ```
 cp /media/penelopeprime/GenomeBioinformaticsNov2022/Day1/EBI_NGSBioinfo_Nov2022.tar .
 ```
@@ -305,7 +305,7 @@ samtools index lane1_sorted.bam
 * Can you guess the extension of the index file?  
 * Have a look at the header of your new bam file (`samtools view -H lane1_sorted.bam`)  
 	+ How many chromosomes are present and which version of the SAM is it?  
-	+ Can you see the read group line?  
+	+ Can you see the read group line? Don't worry if not, or if this is confusing, we will look at it in detail soon.    
 * Use unix command more on your SAM file and check what is after the header…  
 
 
@@ -397,9 +397,9 @@ following questions to understand the quality of your alignments.
 
 * What's the percentage of mapped reads?
 * What's the percentage of duplicated reads? 
-* What’s the average coverage? Is this equally distributed across chromosomes?
+* What’s the average coverage? Is this equally distributed across the genome?
 * What’s the fraction of the reference to have at least 2X coverage? and 4X?
-* What’s the average mapping quality? Is this equally distributed across chromosomes?
+* What’s the average mapping quality? Is this equally distributed across the genome?
 
 
 ## BAM QC with individual software tools  
@@ -599,14 +599,8 @@ a mapping quality less than the number specified
 
 * Check the FreeBayes user manual to see other options. 
 	+ Can you tell why we have used the `-u` option?  
-
-**Keep in mind:** This was a pragmatic choice for this practical, however, 
-as per FreeBayes manual page, this is **NOT** the best practice!  
-See section ‘Getting the best results’ [here](https://github.com/ekg/freebayes).  
-
-
-:question: :question: :question: :question: **Questions**  
-
+	+ **Keep in mind:** This was a pragmatic choice for this practical, however, 
+as per FreeBayes manual page, this is **NOT** the best practice! See section ‘Getting the best results’ [here](https://github.com/ekg/freebayes).  
 * Select SNPs from the FreeBayes vcf file using gatk SelectVariants.  
 
 
@@ -628,7 +622,7 @@ in both vcf files (B) or the first vcf file (1) or the second vcf file(2).
 :question: :question: :question: :question: **Questions**  
 
 * How many SNPs are present in both gatk and freebayes?  
-* How many are present in only 1?  
+* How many are present only in one of the two?  
 * The compare.log file may be useful. See if you can also get the answer from using a `grep` command (hint: option `-w` may be useful here; do you agree?).  
 
 
