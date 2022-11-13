@@ -53,7 +53,8 @@ with the sequences of some of Illumina primers and adapters (primers_adapters.fa
 -----
 
 ## Assess the quality of the data using FastQC
-**FastQC** is a quality control tool for high throughput sequence data.  
+[**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) 
+is a quality control tool for high throughput sequence data.  
 
 You can launch FastQC with a graphical interface as follows:  
 ```
@@ -69,9 +70,10 @@ Otherwise you can use the command line interface and make an html report of the 
 ```
 fastqc <fastq_input_file>
 ```
-
+You will then be able to open the html report using `firefox <html_file> &`.  
 Work your way through the analysis modules on the left hand side of the FastQC window/html, 
-using the FastQC documentation, familiarize yourself with what each module is showing. 
+using the [FastQC documentation](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/), 
+familiarize yourself with what each module is showing. 
 Pay particular attention to the modules in the list below as they 
 will help direct the downstream trimming and adapter removal steps:  
 
@@ -80,7 +82,7 @@ will help direct the downstream trimming and adapter removal steps:
 * Per Sequence Quality Scores
 * Overrepresented Sequences
 
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * What is the total number of sequences in each of the paired end fastq files? Do both lanes provide the same sequencing output (same number of reads)?
@@ -88,7 +90,7 @@ will help direct the downstream trimming and adapter removal steps:
 * What is the length of the sequences in the fastq files? Is the length the same for both lanes?
 * How is the quality of the reads across the pair? Is one read better than the other?
 * Is there any issue with the data?
-
+----
 ## Use Trimmomatic to remove primer and adapter sequences   
 
 **Trimmomatic** is a java tool for performing a range of trimming tasks 
@@ -126,7 +128,7 @@ ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36
 
 
 The parameters used in this command are defined as follows:  
-| option | meaning |
+| option/argument | meaning |
 |-----------------------------------|---------------------------------------------------------------|
 | PE | data is paired end |
 | -phred33 | quality scores are 33 offset |
@@ -142,13 +144,13 @@ The parameters used in this command are defined as follows:
 |   primers_adapters.fa | text file of adapter sequences to search for |
 |   :2:30:10 | adapter-read alignment settings - see manual for explanation |
 |   MINLEN:36 | delete reads trimmed below length MINLEN |
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * According to the Trimmomatic screen output, 
 what is the number and percentage of read pairs that ‘both survived’ adapter trimming?  
 * How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
-
+----
 
 ## Use Trimmomatic to trim low quality bases
 The FastQC *Per Base Sequence Quality* module has already told us that there could be 
@@ -181,7 +183,7 @@ LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15  MINLEN:36
 
 
 The parameters used in this command are defined as follows:  
-| option | meaning |
+| option/argument | meaning |
 |-----------------------------------|---------------------------------------------------------------|
 | PE | data is paired end |
 | -phred33 | quality scores are 33 offset |
@@ -199,12 +201,12 @@ The parameters used in this command are defined as follows:
 | MINLEN:36 | delete reads trimmed below length MINLEN |
 
 
-
+-----
 :question: :question: :question: :question: **Questions**  
 
 * Check the final fastq files (lane*/s-7-1.trim.paired.fastq and lane*/s-7-2.trim.paired.fastq) 
 with FastQC before proceeding to alignment.
-
+-----
 
 ## Alignment to a reference genome  
 ### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard  
@@ -214,11 +216,11 @@ use downstream in the pipeline.
 For example the samtools index file, `ref_name.fai`, stores records of sequence identifier, 
 length, the offset of the first sequence character in the file, the number of characters per 
 line and the number of bytes per line.  
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * As you generate each index look at the files created using the `ls` command and options (e.g. `-lrth`)
-
+----
 **samtools index**
 ```
 samtools faidx Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa
@@ -240,11 +242,12 @@ picard CreateSequenceDictionary \
 R=Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
 O=Saccharomyces_cerevisiae.EF4.68.dna.toplevel.dict
 ```
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * Can you name the extensions of the files (e.g. ‘.txt’, ‘.sam’) 
 that have been created for indices by each tool?
+----
 
 ### 2. Align reads to the reference genome using BWA  
 **BWA** uses the burrows wheeler algorithm to compress data and 
@@ -263,7 +266,7 @@ Options used (see bwa manual for more options):
 
 * `-R`: Add read group. A read group is a set of reads that were 
 generated from a single run/lane/chip of a sequencing instrument. 
-By adding read groups to a bam file we are adding a line in the bam header specifying a number of tags. |
+By adding read groups to a bam file we are adding a line in the bam header specifying a number of tags.  
 
 The read group tags used here are:  
 
@@ -275,7 +278,7 @@ The read group tags used here are:
 | PU | read group platform unit (e.g. flowcell lane, chip barcode, etc) |  
 | SM | read group sample name |  
 
-You can find more information about read groups [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups)   
+You can find more information about read groups [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups).     
 
 
 
@@ -294,14 +297,13 @@ Options used:
 samtools sort lane1.bam -o lane1_sorted.bam
 ```
 
-Samtools sorts alignments by their leftmost chromosomal coordinates. 
-You can sort by read name instead using `-t` option.  
+Samtools sorts alignments by their leftmost chromosomal coordinates.    
 
 **Index the sorted bam for fast access**
 ```
 samtools index lane1_sorted.bam
 ```
-
+-----
 :question: :question: :question: :question: **Questions**  
 
 * Can you guess the extension of the index file?  
@@ -309,7 +311,7 @@ samtools index lane1_sorted.bam
 	+ How many chromosomes are present and which version of the SAM is it?  
 	+ Can you see the read group line? Don't worry if not, or if this is confusing, we will look at it in detail soon.    
 * Use unix command more on your SAM file and check what is after the header…  
-
+-----
 
 # END OF DAY1
 
