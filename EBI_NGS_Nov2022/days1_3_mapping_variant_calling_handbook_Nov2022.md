@@ -5,13 +5,14 @@
 
 ## Summary  
 
-Over the next three days, during the practical sessions, we will take an Illumina paired end data set and perform the following steps:  
+Over the next three days, during the practical sessions, we will take an Illumina paired end dataset 
+and perform the following steps:  
 
-* initial data QC 
-* removal of adapter and primer sequences and low quality bases/reads from the data set
-* alignment to a reference sequence
-* BAM refinement 
-* BAM QC and visualisation
+* initial data QC  
+* removal of adapter and primer sequences and low quality bases/reads  
+* alignment to a reference sequence  
+* BAM refinement   
+* BAM QC and visualisation  
 * variant calling and filtering   
 
 
@@ -44,11 +45,12 @@ You should now find a folder called **VariantCalling** containing read data
 a file with the coordinates of the yeast mtDNA (mito.intervals), and a file 
 with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
 
+-----
 :question: :question: :question: :question: **Questions:**  
 
 * Can you recognize the read data? 
 * Which is read 1 and which is read 2?   
-
+-----
 
 ## Assess the quality of the data using FastQC
 **FastQC** is a quality control tool for high throughput sequence data.  
