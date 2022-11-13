@@ -25,3 +25,12 @@ and any other useful resource for day1 to day3 of the EMBL-EBI
 
 * [**Variant filtering** slides](https://docs.google.com/presentation/d/1QboG7Oxv2Hv2CjajVKNRS5TkB76aefiUKH97I8BOUYM/edit?usp=sharing)   
 * [Handbook for the practial sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2022/days1_3_mapping_variant_calling_handbook_Nov2022.md)  
+
+#### Data:  
+
+* [yeast dataset for practical sessions](https://drive.google.com/file/d/1JlfiNTWTsCjn1WsL5e1F32oJX9MKl1Yw/view?usp=share_link)  
+	+ [trimmed paired fastq files](https://drive.google.com/file/d/1qk03tuGBv3JMJninSCumK4NPtn4_eSaN/view?usp=sharing)  
+	+ [final library bam file](https://drive.google.com/file/d/1gjPlPUGjYb4djLgDUkz3_JasN8ya1IUJ/view?usp=sharing)  
+	+ [final library bam index file](https://drive.google.com/file/d/1u7qTMsVF-RBHG2nD8EbKaDosLMIkeaYv/view?usp=sharing)  
+
+* [extra exercise](https://drive.google.com/file/d/16b48OPq-uKcs1tLlPEjpn-qvVrkMu7dO/view?usp=share_link)  
