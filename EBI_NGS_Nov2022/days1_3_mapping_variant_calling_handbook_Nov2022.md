@@ -399,7 +399,8 @@ qualimap bamqc -bam library_final.bam -outdir qualimap_report
 ```  
 
 If you are interested about other options: http://qualimap.conesalab.org/doc_html/command_line.html   
-----
+
+-----
 :question: :question: :question: :question: **Questions**  
 Explore the different analyses that Qualimap has run and try and answer the 
 following questions to understand the quality of your alignments.  
@@ -409,7 +410,7 @@ following questions to understand the quality of your alignments.
 * What’s the average coverage? Is this equally distributed across the genome?
 * What’s the fraction of the reference to have at least 2X coverage? and 4X?
 * What’s the average mapping quality? Is this equally distributed across the genome?
-----
+-----
 
 ## BAM QC with individual software tools  
 **If it is too late, do not worry about this part and proceed to BAM visualization.**   
