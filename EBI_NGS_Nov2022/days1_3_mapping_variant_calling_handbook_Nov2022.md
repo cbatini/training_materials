@@ -209,18 +209,20 @@ with FastQC before proceeding to alignment.
 -----
 
 ## Alignment to a reference genome  
-### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard  
+### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard   
+
 Indices are necessary for quick access to specific information in very large files. 
 Here we will create indices for the Saccharomyces reference genome for tools we will 
 use downstream in the pipeline. 
 For example the samtools index file, `ref_name.fai`, stores records of sequence identifier, 
 length, the offset of the first sequence character in the file, the number of characters per 
 line and the number of bytes per line.  
-----
+ 
+-----
 :question: :question: :question: :question: **Questions**  
 
 * As you generate each index look at the files created using the `ls` command and options (e.g. `-lrth`)
-----
+-----
 **samtools index**
 ```
 samtools faidx Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa
@@ -367,8 +369,6 @@ You can find more information and command line examples [here](https://gatk.broa
 In the same page there is a paragraph (No excuses) with suggestions on how to proceed when 
 you don’t have a good catalog of variant sites for your species.  
 
-If you want to run local realignment you will have to use a previous version of GATK. 
-You can find information on how to run it in GATK 3.8 [here](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_indels_IndelRealigner.php).   
 
 **Duplicate removal with picard**  
 PCR duplicates may confound coverage estimates 
@@ -438,10 +438,11 @@ samtools flagstat library.bam
 samtools flagstat library_final.bam	
 ```
 
+----
 :question: :question: :question: :question: **Questions**  
 
 * Can you see any difference between samtools flagstat output before and after refinement?
-
+----
 
 **This part includes using R, do not proceed if you are not familiar with R**
  (otherwise pair up with someone who can use R).  
