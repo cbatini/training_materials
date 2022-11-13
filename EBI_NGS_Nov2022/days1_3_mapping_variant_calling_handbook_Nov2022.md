@@ -322,7 +322,7 @@ We are using:
 
 * the symbol `|` (pipe): it indicates that the output of the command before 
 the symbol should be used as the input of the command after the symbol  
-* the symbol `-` (dash): it indicates the output of the previous command should read as standard input   
+* the symbol `-` (dash): it indicates the output of the previous command should be read as standard input   
 * the symbols `&&` (ampersand): it indicates to run a command only if the previous one exited successfully 
 
 ```
@@ -335,17 +335,18 @@ samtools index lane2_sorted.bam
 ```  
 
 ### 3. Merge BAM files per library  
-We will use picard MergeSamFiles.  
+As we move towards BAM refinement and variant calling, we will merge our two lanes of data 
+into a single bam file for the whole library. For this we will use picard MergeSamFiles.  
 ```
 picard MergeSamFiles INPUT=lane1_sorted.bam INPUT=lane2_sorted.bam OUTPUT=library.bam
 ```   
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * Index the merged bam file using samtools.  
 * If you wanted/had to convert your library bam file into cram format, 
 which samtools command would you use?  
-
+----
 ## BAM refinement  
 
 BAM refinement has three steps:  
@@ -356,15 +357,16 @@ BAM refinement has three steps:
 
 We will not run the first two steps in this practical, because:  
 
-* local realignment is not included anymore in the best practice by GATK 
+* **local realignment is not included anymore in the best practice by GATK** 
 (and is not available as a tool in GATK 4) because the haplotype-based variant 
 callers will take care of this issue during variant calling;  
 * base quality recalibration is a slow process that takes time to run 
 and requires a good list of variant sites for the species in consideration 
 (e.g. for humans the latest version of dbSNP)  
-You can find more information and command line examples [here](https://gatkforums.broadinstitute.org/gatk/discussion/44/base-quality-score-recalibration-bqsr).   
-In the same page there is a paragraph with suggestions on how to proceed when 
+You can find more information and command line examples [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890531-Base-Quality-Score-Recalibration-BQSR-).   
+In the same page there is a paragraph (No excuses) with suggestions on how to proceed when 
 you don’t have a good catalog of variant sites for your species.  
+
 If you want to run local realignment you will have to use a previous version of GATK. 
 You can find information on how to run it in GATK 3.8 [here](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_indels_IndelRealigner.php).   
 
@@ -377,10 +379,11 @@ but it marks the reads in the bam by using the bitwise flag.
 ```
 picard MarkDuplicates INPUT=library.bam OUTPUT=library_final.bam METRICS_FILE=dupl_metrics.txt
 ```
+----
 :question: :question: :question: :question: **Questions**  
 
 * Index library_final.bam file  
-
+----
 
 ## BAM QC with qualimap  
 **Qualimap** is a tool for quick BAM QC and it works with DNA-seq, 
@@ -395,8 +398,8 @@ or you can produce an html report for your final bam:
 qualimap bamqc -bam library_final.bam -outdir qualimap_report
 ```  
 
-If you are interested about other options: http://qualimap.bioinfo.cipf.es/doc_html/command_line.html 
-
+If you are interested about other options: http://qualimap.conesalab.org/doc_html/command_line.html   
+----
 :question: :question: :question: :question: **Questions**  
 Explore the different analyses that Qualimap has run and try and answer the 
 following questions to understand the quality of your alignments.  
@@ -406,7 +409,7 @@ following questions to understand the quality of your alignments.
 * What’s the average coverage? Is this equally distributed across the genome?
 * What’s the fraction of the reference to have at least 2X coverage? and 4X?
 * What’s the average mapping quality? Is this equally distributed across the genome?
-
+----
 
 ## BAM QC with individual software tools  
 **If it is too late, do not worry about this part and proceed to BAM visualization.**   
@@ -419,11 +422,11 @@ below might be useful when you want to check something specific about your bam.
 ```
 gedit dupl_metrics.txt &
 ```
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * What's the percentage of duplicated reads?   
-
+----
 
 **Get samtools flagstat metrics**
 ```
@@ -446,7 +449,7 @@ Look at the coverage per position in mitochondria.
 ```
 samtools depth -a -r Mito:1-85779 library_final.bam > mito_coverage
 ```
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * Add options `-q` and `-Q` to calculate the coverage per position using a 
@@ -456,7 +459,7 @@ minimum BQ 20 and a minimum MQ 50 (do you know how and where to specify this in 
 	+ plot coverage per position  
 	+ check how many positions have coverage 0, or equal to and greater than 4 
 	(or any other threshold you are curious about)  
-
+---- 
 Options used:    
                                                                                                                                                                                                                                                              
 * `-a`: Output all positions (including those with zero depth)  
@@ -470,12 +473,12 @@ We will extract mtDNA from final the BAM to have a smaller file to visualise.
 ```
 samtools view -bh -o mito.bam library_final.bam Mito
 ```  
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * Index the mito bam file  
 * Do you know why we have used Mito to extract the mtDNA? Check your dictionary or your bam header.  
-
+----
 
 We will use IGV to visualise our alignment and, as it is installed on this container, you can just type:
 ```
@@ -483,10 +486,9 @@ igv &
 ```  
 
 However, it is good to know that you can use the java web start version of IGV.  
-Follow this link: https://www.broadinstitute.org/software/igv/download  
-Register, and you’ll find the IGV Java Web start. Launch IGV with 750 MB.  
-
-**In both cases, be patient when you use IGV!**  
+Follow this link: https://igv.org/app/   
+ 
+**In either case, be patient when you use IGV!**  
 
 You will see that the default reference genome loaded is Human hg19. 
 Load your reference genome (check Genomes - Load Genome from File) 
@@ -503,11 +505,11 @@ between the data and the reference genome can be identified and qualified.
 GATK, samtools and Freebayes are popular softwares to carry out this analysis. 
 Here we will use GATK 4.0 HaplotypeCaller.  
 
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * Are the reference index and dictionary in the same directory as the reference file?  
-
+----
 If you are starting your analyses directly from a bam file created by someone else, 
 make sure you have the same reference genome they have used for the alignment. 
 It is essential that the contigs in the reference are the same (in number, length and ID) 
@@ -517,11 +519,11 @@ to those used in the bam file.
 **GATK HaplotypeCaller**  
 Call raw variants with no filters on chromosome 1.  
 
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * what is the ID for this chromosome?  
-
+----
 ```
 gatk HaplotypeCaller \
 -R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
@@ -553,15 +555,15 @@ a list of intervals (e.g. -L myFile.intervals)
 * `-mbq`: minimum base quality required to consider a base for calling  
 * `--minimum-mapping-quality`: minimum read mapping quality required to consider a read for calling  
 
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * what's the difference (if any) between the options for defining minimum BQ and MQ thresholds?  
 * have a look at the vcf file and familiarise yourself with it  
 * how many variants have been called in each case? 
 Can you explain the difference? (hint: you can use `grep` and options to count the variants in the vcf files)  
-* check the GATK HaplotypeCaller [user manual](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php) to see other options.  
-
+* check the GATK HaplotypeCaller [user manual](https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller) to see other options.  
+---
 
 Now we are going to extract only SNPs from both vcf files.  
 ```
@@ -571,13 +573,13 @@ gatk SelectVariants \
 -O gatk_variants_raw_I_SNP.vcf \
 --select-type SNP 
 ```
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * Repeat this command on the second vcf file.  
 * Can you tell how many INDELs were called in each case?  
 * And has the BQ20+MQ50 filter changed this picture?   
-
+----
 
 **FreeBayes**  
 We have seen that the BQ20+MQ50 filter has an impact on the variants called, 
@@ -601,15 +603,16 @@ base quality is less than the number specified (20 in our case)
 * `-m`: exclude alignments from analysis if they have 
 a mapping quality less than the number specified
 
-
+----
 :question: :question: :question: :question: **Questions**  
 
-* Check the FreeBayes user manual to see other options. 
+* Check the FreeBayes [user manual](https://github.com/freebayes/freebayes) to see other options. 
 	+ Can you tell why we have used the `-u` option?  
 	+ **Keep in mind:** This was a pragmatic choice for this practical, however, 
-as per FreeBayes manual page, this is **NOT** the best practice! See section ‘Getting the best results’ [here](https://github.com/ekg/freebayes).  
+as per FreeBayes manual page, **Users are strongly cautioned against using these, 
+because removing this information is very likely to reduce detection power**.  
 * Select SNPs from the FreeBayes vcf file using gatk SelectVariants.  
-
+----
 
 **Compare the GATK HaplotypeCaller and the FreeBayes vcf files**
 ```
@@ -625,13 +628,13 @@ The file column headers are as follows: CHROM POS1 POS2 IN_FILE REF1 REF2 ALT1 A
 The 4th column (IN_FILE) indicates if the SNP was found 
 in both vcf files (B) or the first vcf file (1) or the second vcf file(2).  
 
-
+-----
 :question: :question: :question: :question: **Questions**  
 
 * How many SNPs are present in both gatk and freebayes?  
 * How many are present only in one of the two?  
-* The compare.log file may be useful. See if you can also get the answer from using a `grep` command (hint: option `-w` may be useful here; do you agree?).  
-
+* The compare.log file may be useful (do not worry about the warnings though). See if you can also get the answer from using a `grep` command (hint: option `-w` may be useful here; do you agree?).  
+-----
 
 
 
@@ -667,7 +670,7 @@ vcftools \
 As it is working on the data per sample, it substitutes the individual genotypes 
 with missing data if they don't pass the filter [./. instead of 0/0 or 0/1 or 1/1].  
 
-
+----
 :question: :question: :question: :question: **Questions**  
 
 * Have a look at the first few variants to understand the different outputs 
@@ -687,8 +690,8 @@ of these two commands.
 	--recode-INFO-all
 	```
 	+ Can you understand what this command does?  
-
-EXTRA  
+----
+**EXTRA**  
 There are a couple of extra activities you may want to try at this point:  
 
 * you could compare your results so far with another caller:  
