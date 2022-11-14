@@ -147,7 +147,7 @@ The parameters used in this command are defined as follows:
 ----
 :question: :question: :question: :question: **Questions**  
 
-* According to the Trimmomatic screen output, 
+* According to the Trimmomatic output on the terminal, 
 what is the number and percentage of read pairs that ‘both survived’ adapter trimming?  
 * How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
 ----
