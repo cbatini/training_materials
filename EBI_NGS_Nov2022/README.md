@@ -9,6 +9,8 @@ and any other useful resource for day1 to day3 of the EMBL-EBI
 #### Day 1:  
 
 * [**Overview of NGS technology** slides](https://docs.google.com/presentation/d/1CfMusrKkOxgPK6V93ZzRMqb_ilueGOAzaTnnkhah7_Y/edit?usp=sharing)  
+* [**Introduction to Unix** slides](https://drive.google.com/file/d/1s23lYQJla4LL3rg85eYSI9YatEohGkF2/view?usp=sharing)  
+* [**Introduction to Unix** handbook](https://github.com/krother/bash_tutorial/blob/master/README.md)  
 * [**Quality control** slides](https://docs.google.com/presentation/d/1XfDMpLkt14B9zowgpEV9OqD6IRaRO-VK4FCIzIaFiPA/edit#slide=id.p40)  
 * [**Read mapping** slides](https://docs.google.com/presentation/d/1tH-8Wvjkn37g675mX_MyAeBxBMu-BSSOCX9_LhWh6tM/edit#slide=id.gbcd35d3714_0_1573)  
 * [**Before starting** the practical session slides](https://docs.google.com/presentation/d/16y2c39O7QJTOXrfVVFb77204x13e0yrUtUw8P9rUt5Q/edit?usp=sharing)  
