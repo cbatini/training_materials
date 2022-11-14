@@ -19,6 +19,8 @@ and any other useful resource for day1 to day3 of the EMBL-EBI
 #### Day 2:  
 
 * [**SAM/BAM file formats** slides](https://docs.google.com/presentation/d/18EsQqkgI0QnU_DGX3X7d43kj3f9fTCYXQOBtLH87688/edit?usp=sharing)    
+* [**Introduction to BASH, loops, and variables** slides](https://drive.google.com/file/d/1I0bnwlAzLqI5VSotgew2azOlFwnWRrJl/view?usp=sharing)  
+* [**Introduction to BASH, loops, and variables** handbook](https://drive.google.com/file/d/1I0bnwlAzLqI5VSotgew2azOlFwnWRrJl/view?usp=sharing)  
 * [**BAM refinement, QC & visualisation** slides](https://docs.google.com/presentation/d/18EsQqkgI0QnU_DGX3X7d43kj3f9fTCYXQOBtLH87688/edit?usp=sharing)  
 * [**Variant calling** slides](https://docs.google.com/presentation/d/1QboG7Oxv2Hv2CjajVKNRS5TkB76aefiUKH97I8BOUYM/edit?usp=sharing)   
 * [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2022/days1_3_mapping_variant_calling_handbook_Nov2022.md)  
