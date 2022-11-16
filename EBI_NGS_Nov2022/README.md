@@ -32,6 +32,12 @@ and any other useful resource for day1 to day3 of the EMBL-EBI
 * [**Variant calling SVs & CNVs** slides](https://docs.google.com/presentation/d/1_mAS3vU08wEniObk5N6tndym2NEtL8JFNRiQ-gNkP3A/edit?usp=share_link)  
 * [**Variant calling SVs & CNVs** handbook for the practical session](https://docs.google.com/document/d/1I33hU5T-zkVgXE5EwwWa0uJSSfJ-lbTRl8qWJ5Js-Ng/edit?usp=share_link)  
 
+#### Day 4:  
+
+* [**Scaling things up** slides](https://docs.google.com/presentation/d/1yqNiX9SYAP4Vp94fleayh-BbbxFOUhcQ/edit?usp=sharing&ouid=110304472558688375056&rtpof=true&sd=true)  
+* [**Scaling things up** handbook](https://github.com/seanlaidlaw/EBI-Bioinformatics-course-Scaling_things_up)  
+
+
 #### Data:  
 
 * [yeast dataset for practical sessions](https://drive.google.com/file/d/1JlfiNTWTsCjn1WsL5e1F32oJX9MKl1Yw/view?usp=share_link)  
