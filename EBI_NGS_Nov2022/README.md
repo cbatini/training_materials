@@ -29,7 +29,6 @@ and any other useful resource for day1 to day3 of the EMBL-EBI
 
 * [**Variant filtering** slides](https://docs.google.com/presentation/d/1QboG7Oxv2Hv2CjajVKNRS5TkB76aefiUKH97I8BOUYM/edit?usp=sharing)   
 * [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2022/days1_3_mapping_variant_calling_handbook_Nov2022.md)  
-
 * [**Variant calling SVs & CNVs** slides](https://docs.google.com/presentation/d/1_mAS3vU08wEniObk5N6tndym2NEtL8JFNRiQ-gNkP3A/edit?usp=share_link)  
 * [**Variant calling SVs & CNVs** handbook for the practical session](https://docs.google.com/document/d/1I33hU5T-zkVgXE5EwwWa0uJSSfJ-lbTRl8qWJ5Js-Ng/edit?usp=share_link)  
 #### Data:  
