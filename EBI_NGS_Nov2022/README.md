@@ -36,7 +36,8 @@ and any other useful resource for day1 to day3 of the EMBL-EBI
 
 * [**Scaling things up** slides](https://docs.google.com/presentation/d/1yqNiX9SYAP4Vp94fleayh-BbbxFOUhcQ/edit?usp=sharing&ouid=110304472558688375056&rtpof=true&sd=true)  
 * [**Scaling things up** handbook](https://github.com/seanlaidlaw/EBI-Bioinformatics-course-Scaling_things_up)  
-
+* [**Introduction to Github** slides](https://docs.google.com/presentation/d/1c8FLW79kK7SbYaSkryaYnjSmmcXkNi37?rtpof=true&authuser=sl31%40sanger.ac.uk&usp=drive_fs)  
+* [**Introduction to Github** handbook](https://github.com/seanlaidlaw/EBI-Introduction-to-Github)  
 
 #### Data:  
 
