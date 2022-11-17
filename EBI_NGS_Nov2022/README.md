@@ -2,7 +2,7 @@
 ### 14-18 November 2022  
 
 You can find here the links to slides, handbook for the practical sessions, 
-and any other useful resource for day1 to day3 of the EMBL-EBI 
+and any other useful resource for day1 to day4 of the EMBL-EBI 
 **Genome bioinformatics: resequencing and variant calling** 
 2022 course.  
 
