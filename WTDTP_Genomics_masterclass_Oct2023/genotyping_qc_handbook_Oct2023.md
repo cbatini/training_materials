@@ -28,7 +28,7 @@ takes raw genotyping data to perform the following QC steps:
 ## Getting the data  
 
 A tar archive containing all the files needed for this practical is avalable 
-[here](https://drive.google.com/file/d/10Dhal1aB1VAAPbIR6F88AWlPmwxsWTtC/view?usp=share_link).  
+[here](https://drive.google.com/file/d/1D4YgwAQVkYAxIY_8cpZaO4I4IHxWnlSg/view?usp=sharing).  
 Open your browser in ALICE and download it there. 
 
 **Create a directory to use for this practical**, 
@@ -39,7 +39,7 @@ mv ~/Downloads/array_tutorial_files.tar.gz .
 
 You can then open this file using the command:  
 ```
-tar xfvz raw-GWA-data.tgz
+tar xfvz array_tutorial_files.tar.gz
 ```
 
 You should now find a number of files in your folder, including the raw data plink files.
