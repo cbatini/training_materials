@@ -5,9 +5,9 @@
 
 ## Summary  
 
-THis practical session follow (mostly) the tutorial from 
+This practical session follows (mostly) the tutorial from 
 [Anderson et al 2010](https://drive.google.com/file/d/1tKREcp8m8qc5o8S0JfyyNu9R--LbAd0F/view?usp=sharing) and 
-take raw genotyping data to perform the following QC steps:  
+takes raw genotyping data to perform the following QC steps:  
 
 * per-sample QC  
 	+ discordant sex information  
@@ -17,7 +17,7 @@ take raw genotyping data to perform the following QC steps:
 * per-variant QC  
 	+ outliers for missing rate  
 	+ minor allele frquency  
-	+ Hardy Weinberg equilibrium  
+	+ deviation from Hardy Weinberg equilibrium  
 
 
 
@@ -34,7 +34,7 @@ Open your browser in ALICE and download it there.
 **Create a directory to use for this practical**, 
 move into it using `cd` and move the tar archive there using this command:  
 ```
-mv ~/Downloads/raw-GWA-data.tgz .
+mv ~/Downloads/array_tutorial_files.tar.gz .
 ```
 
 You can then open this file using the command:  
@@ -136,14 +136,13 @@ plink \
 :question: :question: :question: :question: **Questions:**  
 
 * What is the difference between .imiss and .lmiss files?
-* How many individuals show discordant sex information?
-	+ What would you do next?
 
 -----
 
+Open R:
+
 
 ```
-### open R on the terminal for this part
 
 library(tidyverse)
 
@@ -176,15 +175,15 @@ het %>%
 -----
 :question: :question: :question: :question: **Questions:**  
 
-* How many individuals have you identifies as heterozygosity or missingness outliers?
+* How many individuals have you identified as heterozygosity or missingness outliers?
    
 -----
 
 
 
 ### Duplicates    
-We will check for duplicated samples. To do so we will first prune our set of variants and keep only 
-independent variants (r2 < 0.2 ).
+We will check for duplicated samples. To do so, we will first prune our set of variants and keep only 
+independent variants (r2 < 0.2 ), and then exclude samples with PI_HAT > 0.98. 
 
 
 
@@ -205,10 +204,9 @@ plink \
 
 ```
 
+Open R:
 
 ```
-### open R on the terminal for this part
-
 library(tidyverse)
 
 ibd <- read.table("raw-GWA-data-ibd.genome", header = T)
@@ -227,12 +225,15 @@ Genetic distance can be a confounding in GWASs so we will compare our samples to
 panel and exclude individuals too distant from the main group.  
 
 ```
+
+## extract variants in hapmap from your data
 plink \
 	--bfile raw-GWA-data \
 	--extract hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt \
 	--make-bed \
 	--out raw-GWA-data.hapmap-snps 
-	
+
+## attempt merging your data with hapmap	
 plink \
 	--bfile raw-GWA-data.hapmap-snps \
 	--bmerge hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps.bed \
@@ -243,7 +244,7 @@ plink \
 	--out raw-GWA-data.hapmap3r2.pruned
 
 
-### repeat extraction excluding the problematic variants	
+## repeat extraction excluding the problematic variants	
 plink \
 	--bfile raw-GWA-data \
 	--extract hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt \
@@ -251,7 +252,7 @@ plink \
 	--make-bed \
 	--out raw-GWA-data.hapmap-snps 
 
-###reattempt merging	
+## attempt merging the two datasets again	
 plink \
 	--bfile raw-GWA-data.hapmap-snps \
 	--bmerge hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps.bed \
@@ -261,7 +262,7 @@ plink \
 	--make-bed \
 	--out raw-GWA-data.hapmap3r2.pruned
 	
-### define hapmap populations
+## run PCA using only hapmap populations to calculate the loadings
 plink \
 	--bfile raw-GWA-data.hapmap3r2.pruned \
 	--within population_def.txt \
@@ -270,10 +271,10 @@ plink \
 	--out pca
  ```
  
- ```
- ###in R 
+ Open R:
  
- library(tidyverse)
+ ```
+library(tidyverse)
  
 pca <- read.table("pca.eigenvec", header = F) %>%
 	rename( PC1 = V3,
@@ -291,8 +292,6 @@ PC1_low <- pca %>%
 		mean()
 
 
-
-	
 pca %>% 
 	ggplot(aes(x=PC1, y=PC2, colour = POP)) + 
 	geom_point() +
@@ -314,16 +313,26 @@ pca %>%
 			PC2 >  mean(pca$PC2[pca$POP == "CEU" & !is.na(pca$POP)]) + 
 				3* sd(pca$PC2[pca$POP == "CEU" & !is.na(pca$POP)]) |
 			PC2 < mean(pca$PC2[pca$POP == "CEU" & !is.na(pca$POP)]) - 
-			3* sd(pca$PC2[pca$POP == "CEU" & !is.na(pca$POP)])) %>%
+				3* sd(pca$PC2[pca$POP == "CEU" & !is.na(pca$POP)])) %>%
 	select(V1, V2) %>%
 	write.table("fail-pops-QC.txt", col.names = F, row.names = F, quote = F)
 	
 ```
+
 	
-	
+
+-----
+:question: :question: :question: :question: **Questions:**  
+
+* How many individuals have you identified as outliers?
+* Did you think the thresholds chosen were reasonable here? Would you change the number of sd to consider?
+   
+-----
+
+### Clean dataset after per-sample QC	
+Create a list of individuals not passing QC and exclude them from the dataset.  	
 	
 ```
-
 cat fail-* | sort | uniq > fail-qc-inds.txt
 
 plink \
@@ -334,9 +343,10 @@ plink \
 ```
 	
 	
+	
 ## Per-variant QC  
 The per-variant QC steps are aimed at excluding variants that performed poorly during genotyping.  
-We usually exclud variants that:  
+We usually exclude variants that:  
 
 * have a missingness rate higher than 0.05  
 * have a MAF lower than 1%  
@@ -354,3 +364,10 @@ plink \
 ```
 	
 	
+-----
+:question: :question: :question: :question: **Questions:**  
+
+* How many individuals have you identified for each criterion?  
+   
+-----
+
