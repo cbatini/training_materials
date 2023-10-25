@@ -152,9 +152,9 @@ het <- read_table("raw-GWA-data-het.het") %>%
 het %>%
 	ggplot(aes(x = F_MISS, y = het ) ) +
 	geom_point() +
-	geom_hline( yintercept = mean(het$het) + 3 * sd(het$het), col = "red") +
-	geom_hline( yintercept = mean(het$het) - 3 * sd(het$het), col = "red") +
-	geom_vline( xintercept = 0.05, col = "blue")
+	geom_hline( yintercept = mean(het$het) + 3 * sd(het$het), linetype=3) +
+	geom_hline( yintercept = mean(het$het) - 3 * sd(het$het), linetype=3) +
+	geom_vline( xintercept = 0.05, linetype=3)
 	
 het %>%
 	filter( het >= mean(het) + 3 * sd(het) |
