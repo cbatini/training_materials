@@ -368,6 +368,7 @@ plink \
 :question: :question: :question: :question: **Questions:**  
 
 * How many individuals have you identified for each criterion?  
+* Do you think the threshold used for HWE is reasonable? And would you exclude these variants? Why?    
    
 -----
 

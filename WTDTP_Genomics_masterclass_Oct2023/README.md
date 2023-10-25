@@ -13,6 +13,8 @@ and any other useful resource for the WT DTP masterclass
 #### Session 2:  
 
 * [**Introduction to genotyping** slides](https://docs.google.com/presentation/d/1tO2jFo8SiZlkxm9-xywHM1BAqCBFMRuvZ36W2m6Fli4/edit?usp=sharing)    
+* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/WTDTP_Genomics_masterclass_Oct2023/genotyping_qc_handbook_Oct2023.md)  
+
 
 #### Session 3:  
 
