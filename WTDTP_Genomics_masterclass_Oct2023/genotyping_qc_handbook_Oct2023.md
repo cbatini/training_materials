@@ -234,7 +234,7 @@ plink \
 	--bmerge hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps.bed \
 	hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps.bim \
 	hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps.fam \
-	--extract raw-GWA-data.prune.in \
+	--extract raw-GWA-data-ld.prune.in \
 	--make-bed \
 	--out raw-GWA-data.hapmap3r2.pruned
 ```
