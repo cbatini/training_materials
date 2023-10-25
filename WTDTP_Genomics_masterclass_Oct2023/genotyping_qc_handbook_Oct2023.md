@@ -20,11 +20,6 @@ takes raw genotyping data to perform the following QC steps:
 	+ deviation from Hardy Weinberg equilibrium  
 
 
-
-
-
-## Dataset
-
 ## Getting the data  
 
 A tar archive containing all the files needed for this practical is avalable 
@@ -88,7 +83,7 @@ genotyping.
 
 
 ### Discordant sex information  
-Comparing the sex information we alrady have about the samples with the 
+Comparing the sex information we already have about the samples with the 
 one that we can infer using genetic data is one step to check if there was any sample mix-up.  
 
 
@@ -226,14 +221,14 @@ panel and exclude individuals too distant from the main group.
 
 ```
 
-## extract variants in hapmap from your data
+## extract variants in reference panel from your data
 plink \
 	--bfile raw-GWA-data \
 	--extract hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt \
 	--make-bed \
 	--out raw-GWA-data.hapmap-snps 
 
-## attempt merging your data with hapmap	
+## attempt merging your data with reference panel	
 plink \
 	--bfile raw-GWA-data.hapmap-snps \
 	--bmerge hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps.bed \
@@ -242,7 +237,17 @@ plink \
 	--extract raw-GWA-data.prune.in \
 	--make-bed \
 	--out raw-GWA-data.hapmap3r2.pruned
+```
 
+-----
+:question: :question: :question: :question: **Questions:**  
+
+* What's the problem?
+   
+-----
+
+
+```
 
 ## repeat extraction excluding the problematic variants	
 plink \
@@ -262,7 +267,7 @@ plink \
 	--make-bed \
 	--out raw-GWA-data.hapmap3r2.pruned
 	
-## run PCA using only hapmap populations to calculate the loadings
+## run PCA on merged dataset using only reference panel populations to calculate the loadings
 plink \
 	--bfile raw-GWA-data.hapmap3r2.pruned \
 	--within population_def.txt \
@@ -350,7 +355,7 @@ We usually exclude variants that:
 
 * have a missingness rate higher than 0.05  
 * have a MAF lower than 1%  
-* have a HWE p-value below 10e-5
+* have a HWE p-value below 10e-4
 
 ```
 plink \
@@ -381,6 +386,7 @@ plink \
 
 * How many individuals and how many variants have remained after all the filtering?  
 * Is there anything you would have done differently? Why?  
-* Can you plot the allele frequencies for the final dataset? Do they look as expected?     
+* Can you plot the allele frequencies for the final dataset? Do they look as expected?
+* When you are preparing the data for GWAS, and you know the case/control status, would you incorporate this information while filtering? How?        
 -----
 
