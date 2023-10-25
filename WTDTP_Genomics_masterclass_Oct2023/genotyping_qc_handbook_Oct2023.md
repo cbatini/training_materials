@@ -372,3 +372,15 @@ plink \
    
 -----
 
+
+## Final clean dataset  
+
+ 	
+-----
+:question: :question: :question: :question: **Questions:**  
+
+* How many individuals and how many variants have remained after all the filtering?  
+* Is there anything you would have done differently? Why?  
+* Can you plot the allele frequencies for the final dataset? Do they look as expected?     
+-----
+
