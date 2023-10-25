@@ -19,7 +19,7 @@ and any other useful resource for the WT DTP masterclass
 #### Session 3:  
 
 * [**Introduction to NGS variant calling** slides](https://docs.google.com/presentation/d/1ClZL1-UOkLKkbfQAHpOSKysb2uROLgNlAC01pTe9e9k/edit?usp=sharing)   
-* [Handbook for the practical sessions]()  
+* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/WTDTP_Genomics_masterclass_Oct2023/mapping_variant_calling_handbook_Oct2023.md)  
 
 #### Session 4:  
 
@@ -35,4 +35,4 @@ and any other useful resource for the WT DTP masterclass
 
 #### Solutions:  
 
-* [Solutions to exercises from Chiara](https://docs.google.com/document/d/1klA9Vu7l-c1CkdwfGkrdGxiMrIFHku2CWW6C-8i0ysA/edit?usp=sharing)  
+* [Solutions to Session 3 exercises from Chiara](https://docs.google.com/document/d/1klA9Vu7l-c1CkdwfGkrdGxiMrIFHku2CWW6C-8i0ysA/edit?usp=sharing)  
