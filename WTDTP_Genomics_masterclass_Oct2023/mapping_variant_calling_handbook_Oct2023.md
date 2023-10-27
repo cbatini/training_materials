@@ -1,7 +1,7 @@
 # NGS data: from initial QC to a ready-to-analyse variant set.  
 ### Chiara Batini  
 ### Genome bioinformatics: resequencing and variant calling  
-### 14-18 November 2022  
+### adapted for the Genomic data masterclass session3 Oct2023
 
 ## Summary  
 
@@ -27,14 +27,16 @@ Characteristics of the experiment:
 
 ## Getting the data  
 
-A tar archive containing all the files needed for this practical (EBI_NGSBioinfo_Nov2022.tar) 
-is available in the shared directory (/media/penelopeprime/GenomeBioinformaticsNov2022/Day1/).  
-**Create a directory to use for this practical**, move into it using `cd` and copy the tar archive there using this command:  
+A tar archive containing all the files needed for this practical is available 
+[yeast dataset for practical sessions](https://drive.google.com/file/d/1JlfiNTWTsCjn1WsL5e1F32oJX9MKl1Yw/view?usp=share_link).  
+Open your browser in ALICE and download it there. 
+
+**Create a directory to use for this practical**, 
+move into it using `cd` and move the tar archive there using this command:  
 ```
-cp /media/penelopeprime/GenomeBioinformaticsNov2022/Day1/EBI_NGSBioinfo_Nov2022.tar .
+mv ~/Downloads/EBI_NGSBioinfo_Nov2022.tar .
 ```
 
-**Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
 You can then open this file using the command:  
 ```
 tar -xvf EBI_NGSBioinfo_Nov2022.tar
@@ -500,6 +502,12 @@ You can try to load the bam file for the whole alignment
 (library_final.bam) but it may take some time.
 
 # END OF DAY2
+
+## If you are starting this tutorial from here  
+
+You will need to download the essential files to run the commands below.  
+You can find these [here](https://drive.google.com/file/d/1Y7iZWapc_jWh4LZ-a5I4uY_rFFDBP_--/view?usp=sharing).
+
 
 ## Variant calling  
 Once the alignments have been refined, SNPs and INDELs differences 
