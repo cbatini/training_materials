@@ -535,6 +535,8 @@ Call raw variants with no filters on chromosome 1.
 * what is the ID for this chromosome?  
 ----
 ```
+module load gatk
+
 gatk HaplotypeCaller \
 -R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
 -I library_final.bam \
@@ -587,6 +589,11 @@ gatk SelectVariants \
 :question: :question: :question: :question: **Questions**  
 
 * Repeat this command on the second vcf file.  
+	gatk SelectVariants \
+	-R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+	--variant gatk_variants_raw_I_bq20_mq50.vcf \
+	-O gatk_variants_raw_I_bq20_mq50_SNP.vcf \
+	--select-type SNP
 * Can you tell how many INDELs were called in each case?  
 * And has the BQ20+MQ50 filter changed this picture?   
 ----
@@ -597,6 +604,8 @@ so we will use this filter for the variant calling with FreeBayes.
 
 Call raw variants using a filter of minimum base quality 20 and minimum mapping quality 50.  
 ```
+module load freebayes
+
 freebayes \
 -q 20 \
 -m 50 \
@@ -622,10 +631,18 @@ a mapping quality less than the number specified
 as per FreeBayes manual page, **Users are strongly cautioned against using these, 
 because removing this information is very likely to reduce detection power**.  
 * Select SNPs from the FreeBayes vcf file using gatk SelectVariants.  
+	gatk SelectVariants \
+	-R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+	--variant freebayes_variants_raw_I_bq20_mq50.vcf \
+	-O freebayes_variants_raw_I_bq20_mq50_SNP.vcf \
+	--select-type SNP
+
 ----
 
 **Compare the GATK HaplotypeCaller and the FreeBayes vcf files**
 ```
+module load vcftools
+
 vcftools \
 --vcf gatk_variants_raw_I_bq20_mq50_SNP.vcf \
 --diff freebayes_variants_raw_I_bq20_mq50_SNP.vcf \
