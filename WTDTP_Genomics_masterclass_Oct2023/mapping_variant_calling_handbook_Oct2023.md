@@ -737,6 +737,12 @@ There are a couple of extra activities you may want to try at this point:
 Let's have a look at the FAQs document for the UK Biobank 
 whole exome sequencing data [here](https://www.ukbiobank.ac.uk/media/najcnoaz/access_064-uk-biobank-exome-release-faq_v11-1_final-002.pdf).  
 
+## 1000 Genomes Project Phase3 vcf files  
+
+These are available for download [here](https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/).  
+
+
+
 
 
 
