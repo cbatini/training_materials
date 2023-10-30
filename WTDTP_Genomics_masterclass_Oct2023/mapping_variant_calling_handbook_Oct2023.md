@@ -589,11 +589,13 @@ gatk SelectVariants \
 :question: :question: :question: :question: **Questions**  
 
 * Repeat this command on the second vcf file.  
+```
 	gatk SelectVariants \
 	-R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
 	--variant gatk_variants_raw_I_bq20_mq50.vcf \
 	-O gatk_variants_raw_I_bq20_mq50_SNP.vcf \
 	--select-type SNP
+```
 * Can you tell how many INDELs were called in each case?  
 * And has the BQ20+MQ50 filter changed this picture?   
 ----
@@ -631,12 +633,13 @@ a mapping quality less than the number specified
 as per FreeBayes manual page, **Users are strongly cautioned against using these, 
 because removing this information is very likely to reduce detection power**.  
 * Select SNPs from the FreeBayes vcf file using gatk SelectVariants.  
+```
 	gatk SelectVariants \
 	-R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
 	--variant freebayes_variants_raw_I_bq20_mq50.vcf \
 	-O freebayes_variants_raw_I_bq20_mq50_SNP.vcf \
 	--select-type SNP
-
+```
 ----
 
 **Compare the GATK HaplotypeCaller and the FreeBayes vcf files**
