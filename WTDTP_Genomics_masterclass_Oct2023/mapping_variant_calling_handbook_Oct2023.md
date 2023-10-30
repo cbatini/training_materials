@@ -732,7 +732,10 @@ There are a couple of extra activities you may want to try at this point:
 	+ What other metrics would you add and why? Discuss this win your breakout room.  
 	+ Can you write the command for filtering variants in gatk?  
 
+## UK Biobank whole exome sequencing data  
 
+Let's have a look at the FAQs document for the UK Biobank 
+whole exome sequencing data [here](https://www.ukbiobank.ac.uk/media/najcnoaz/access_064-uk-biobank-exome-release-faq_v11-1_final-002.pdf).  
 
 
 
