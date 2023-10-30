@@ -28,7 +28,7 @@ Characteristics of the experiment:
 ## Getting the data  
 
 A tar archive containing all the files needed for this practical is available 
-[yeast dataset for practical sessions](https://drive.google.com/file/d/1JlfiNTWTsCjn1WsL5e1F32oJX9MKl1Yw/view?usp=share_link).  
+[here](https://drive.google.com/file/d/1JlfiNTWTsCjn1WsL5e1F32oJX9MKl1Yw/view?usp=share_link).  
 Open your browser in ALICE and download it there. 
 
 **Create a directory to use for this practical**, 
