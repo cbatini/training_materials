@@ -28,7 +28,7 @@ plink2 \
 ```
 You do not need to run this, it is just for your information.  
 We are going to treat these data as if they were generated through genotyping.  
-The data in in b37.  
+The data is in b37.  
 
 -----
 :question: :question: :question: :question: **Questions:**  
@@ -39,7 +39,7 @@ The data in in b37.
 ## Pre-imputation QC  
 
 ### Genotyping QC  
-First thing first, let's perform the initial genotyping QC and remove variants that:  
+First thing first, let's perform the initial genotyping QC and remove variants that have:  
 
 * more than 5% missing data  
 * MAF < 1%
@@ -61,7 +61,7 @@ plink \
 :question: :question: :question: :question: **Questions:**  
 
 * how many variants were excluded for each criterion?  
-* does this make sense to you knowing that we are using data imputed from sequqncing data?  
+* does this make sense to you knowing that we are using data imputed from sequencing data?  
 * how many variants are left after the QC?  
 * is there anything else you would add to this initial QC?       
 -----
@@ -69,13 +69,13 @@ plink \
 
 ### Liftover of plink files from b37 to b38  
 Usually liftover is performed on a list of variants, and for this you can use the UCSC liftOver tool 
-either via [command line](https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/) or 
+either via the [command line](https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/) or 
 via the web interface [here](https://genome.ucsc.edu/cgi-bin/hgLiftOver).  
 The first option will allow you to input an unlimited number of variants, but 
 to use it on the command line, you will need to download the appropriate chain file.  
 
 Here we are going to use the [liftOverPlink tool](https://github.com/sritchie73/liftOverPlink) 
-to liftover plink files from build 37 to 38. This tool make use of the liftOver tool and it will need 
+to liftover plink files from build 37 to 38. This tool makes use of the liftOver tool and it will need 
 the appropriate chain file.  
 The liftOverPlink tool works with python v2, so we need to create a conda environment to use it.  
 
@@ -129,11 +129,11 @@ python liftOverPlink/rmBadLifts.py \
 cut -f 2 1KGP_Ph1_chr22_qced_b38_lifted.dat > to_exclude.dat
 
 plink \
-	--pedmap 1KGP_Ph1_chr22_qced_b38 \
-	--allow-extra-chr \
-	--make-bed \
-	--out 1KGP_Ph1_chr22_qced_b38_lifted \
-	--exclude to_exclude.dat
+--pedmap 1KGP_Ph1_chr22_qced_b38 \
+--allow-extra-chr \
+--make-bed \
+--out 1KGP_Ph1_chr22_qced_b38_lifted \
+--exclude to_exclude.dat
 
 ## deactivate the conda environment  
 conda deactivate
@@ -153,7 +153,7 @@ conda deactivate
 ### Pre-imputation QC using the tool from Will Rayner  
 Will Rayner has written some very useful code that can be 
 used to perform some QC steps before proceeding to imputation.  
-From the webpage:  
+From the webpage, the code:  
 
 * Checks: Strand, alleles, position, Ref/Alt assignments and frequency differences  
 In addition to the reference file, it requires the plink .bim and .frq files  
@@ -189,7 +189,7 @@ vcftools
 perl CreateTOPMed.pl \
 -i ALL.TOPMed_freeze5_hg38_dbSNP_chr22.vcf
 ```
-
+Let's perform the pre-imputation QC with Will Rayner's tool now.  
 
 ```
 ###calculate frequencies for bf_b38 data
@@ -226,8 +226,8 @@ bash Run-plink.sh
 
 ## Imputation to TOPMed  
 I have run the imputation for chr22 on the [TOPMed Imputation Server](https://imputation.biodatacatalyst.nhlbi.nih.gov/#!).  
-The TOPMed reference panl is not publicly available and this 
-is the only way to use it for imputation. SImilarly the Haplotype Reference Panel has its own webpage.  
+The TOPMed reference panel is not publicly available and this 
+is the only way to use it for imputation. Similarly the Haplotype Reference Panel has its own webpage.  
 
 First of all you need to prepare the vcf files, one per chromosome and bgzipped. 
 
@@ -322,38 +322,8 @@ info %>%
 * can you check how many variants pass a number of maf/info filters?  
     + for example, how many variants with MAF < 0.01 have info > 0.8?  
     + continue with other examples  
+* you might have noticed some cryptic columns in the info file, 
+more information on what they mean [here](https://genome.sph.umich.edu/wiki/Minimac3_Info_File)
 -----
-
-
-
-
-### define variant list Rsq < 0.3
-zcat chr22.info.gz | awk 'NR>1 &&  $7 < 0.3 {print $1}' > variants_below_03
-
-### convert to bgen with qctool excluding variants Rsq < 0.3
-qctool -g chr22.dose.vcf.gz -vcf-genotype-field GP -og chr22.bgen -excl-rsids variants_below_03
-
-
-### convert to bgen with plink excluding variants Rsq < 0.3
-plink2 \
-	--vcf chr22.dose.vcf.gz dosage=DS \
-	--export bgen-1.2 ref-first \
-	--exclude variants_below_03 \
-	--out chr22.plink
-
-
-library(tidyverse)
-
-bgen <- read_tsv("bgen.vmiss") %>%
-	rename(miss_bgen = F_MISS)
-	
-plink <- read_tsv("bgen_plink.vmiss") %>%
-	rename(miss_plink = F_MISS)
-
-bgen %>%
-	left_join( plink, by="ID") %>%
-	ggplot(aes(x=miss_bgen, y=miss_plink) ) +
-	geom_point()
-
 
 
