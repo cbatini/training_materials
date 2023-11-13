@@ -23,8 +23,10 @@ and any other useful resource for the WT DTP masterclass
 
 #### Session 4:  
 
+* [**Introduction to imputation** slides](https://docs.google.com/presentation/d/1NPqn8i3tcZEPi81jQ95_oujdXAvvsnf_zh8pD25wres/edit?usp=sharing)   
+* [Handbook for the practical session](https://github.com/cbatini/training_materials/blob/main/WTDTP_Genomics_masterclass_Oct2023/imputation_handbook_Nov2023.md)  
 
-#### Data:  
+#### Data for session 3:  
 
 * [yeast dataset for practical sessions](https://drive.google.com/file/d/1JlfiNTWTsCjn1WsL5e1F32oJX9MKl1Yw/view?usp=share_link)  
 	+ [trimmed paired fastq files](https://drive.google.com/file/d/1qk03tuGBv3JMJninSCumK4NPtn4_eSaN/view?usp=sharing)  
@@ -32,6 +34,13 @@ and any other useful resource for the WT DTP masterclass
 	+ [final library bam index file](https://drive.google.com/file/d/1u7qTMsVF-RBHG2nD8EbKaDosLMIkeaYv/view?usp=sharing)  
 
 * [extra exercise](https://drive.google.com/file/d/16b48OPq-uKcs1tLlPEjpn-qvVrkMu7dO/view?usp=share_link)  
+
+### Data for session 4:  
+
+* [1000 Genomes Project Phase 1 chr22 plink files](https://drive.google.com/file/d/1XGSA7I3SPcNsAHJI9bwLlucNbEWR4rc7/view?usp=sharing)  
+* [TOPMed site file for chr22](https://drive.google.com/file/d/1tQm08OnreiWwVKbMFg52PizdW7IWbOf_/view?usp=sharing)
+* [TOPMed imputed 1KGP chr22 file](https://drive.google.com/file/d/1QKtVkMGzKPWIIAM9PvcxZDf3OORMRpts/view?usp=sharing)  
+ 
 
 #### Solutions:  
 

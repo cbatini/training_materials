@@ -1,0 +1,32 @@
+
+
+### define variant list Rsq < 0.3
+zcat chr22.info.gz | awk 'NR>1 &&  $7 < 0.3 {print $1}' > variants_below_03
+
+### convert to bgen with qctool excluding variants Rsq < 0.3
+qctool -g chr22.dose.vcf.gz -vcf-genotype-field GP -og chr22.bgen -excl-rsids variants_below_03
+
+
+### convert to bgen with plink excluding variants Rsq < 0.3
+plink2 \
+	--vcf chr22.dose.vcf.gz dosage=DS \
+	--export bgen-1.2 ref-first \
+	--exclude variants_below_03 \
+	--out chr22.plink
+
+
+library(tidyverse)
+
+bgen <- read_tsv("bgen.vmiss") %>%
+	rename(miss_bgen = F_MISS)
+	
+plink <- read_tsv("bgen_plink.vmiss") %>%
+	rename(miss_plink = F_MISS)
+
+bgen %>%
+	left_join( plink, by="ID") %>%
+	ggplot(aes(x=miss_bgen, y=miss_plink) ) +
+	geom_point()
+
+
+
