@@ -5,6 +5,7 @@ You can find here the links to slides, handbook for the practical sessions,
 and any other useful resource for day1 to day4 of the EMBL-EBI 
 **Genome bioinformatics: from short- to long-read sequencing** 
 2023 course.  
+All materials are under a [CC BY 4.0 licence](https://creativecommons.org/licenses/by/4.0/).  
 
 #### Pre-course session:
 * [**Introduction to Unix** slides](https://docs.google.com/presentation/d/1ySW9aNkUSh5sbL8eqSSNbO8Au-1rfhj21rfcOJeSIsE/edit?usp=sharing)  
