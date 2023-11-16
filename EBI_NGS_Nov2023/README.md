@@ -1,43 +1,44 @@
 ## Genome bioinformatics: resequencing and variant calling  
-### 14-18 November 2022  
+### 20-24 November 2023  
 
 You can find here the links to slides, handbook for the practical sessions, 
 and any other useful resource for day1 to day4 of the EMBL-EBI 
-**Genome bioinformatics: resequencing and variant calling** 
-2022 course.  
+**Genome bioinformatics: from short- to long-read sequencing** 
+2023 course.  
+
+#### Pre-course session:
+* [**Introduction to Unix** slides](https://docs.google.com/presentation/d/1ySW9aNkUSh5sbL8eqSSNbO8Au-1rfhj21rfcOJeSIsE/edit?usp=sharing)  
+* [**Introduction to Unix** handbook](https://github.com/krother/bash_tutorial/blob/master/README.md)  
+* [**Introduction to BASH** slides](https://docs.google.com/presentation/d/1Aebmxilz4HaC4d320-2A_Jlema7y4AOinZtJUJg12aM/edit?usp=sharing)  
+* [**Introduction to BASH** handbook](https://docs.google.com/document/d/1ok1BY9D8FQFcBqpThNOLlw9W05s8BOilvZBN3AnT8zE/edit?usp=sharing)  
 
 #### Day 1:  
 
-* [**Overview of NGS technology** slides](https://docs.google.com/presentation/d/1CfMusrKkOxgPK6V93ZzRMqb_ilueGOAzaTnnkhah7_Y/edit?usp=sharing)  
-* [**Introduction to Unix** slides](https://drive.google.com/file/d/1s23lYQJla4LL3rg85eYSI9YatEohGkF2/view?usp=sharing)  
-* [**Introduction to Unix** handbook](https://github.com/krother/bash_tutorial/blob/master/README.md)  
-* [**Quality control** slides](https://docs.google.com/presentation/d/1XfDMpLkt14B9zowgpEV9OqD6IRaRO-VK4FCIzIaFiPA/edit#slide=id.p40)  
-* [**Read mapping** slides](https://docs.google.com/presentation/d/1tH-8Wvjkn37g675mX_MyAeBxBMu-BSSOCX9_LhWh6tM/edit#slide=id.gbcd35d3714_0_1573)  
-* [**Before starting** the practical session slides](https://docs.google.com/presentation/d/16y2c39O7QJTOXrfVVFb77204x13e0yrUtUw8P9rUt5Q/edit?usp=sharing)  
-* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2022/days1_3_mapping_variant_calling_handbook_Nov2022.md)  
+* [**Overview of NGS technology** slides]()  
+* [**Quality control** slides]()  
+* [**Read mapping** slides]()  
+* [**Before starting** the practical session slides]()  
+* [Handbook for the practical sessions]()  
   
 #### Day 2:  
 
-* [**SAM/BAM file formats** slides](https://docs.google.com/presentation/d/18EsQqkgI0QnU_DGX3X7d43kj3f9fTCYXQOBtLH87688/edit?usp=sharing)    
-* [**Introduction to BASH, loops, and variables** slides](https://drive.google.com/file/d/1J7N_kL47UuCyMDmEqzxWV3M7JdK1lyWo/view?usp=share_link)  
-* [**Introduction to BASH, loops, and variables** handbook](https://drive.google.com/file/d/1M6xogZVUdmj_LYbgl3fvTys1S2BBstS-/view?usp=sharing)  
-* [**BAM refinement, QC & visualisation** slides](https://docs.google.com/presentation/d/18EsQqkgI0QnU_DGX3X7d43kj3f9fTCYXQOBtLH87688/edit?usp=sharing)  
-* [**Variant calling** slides](https://docs.google.com/presentation/d/1QboG7Oxv2Hv2CjajVKNRS5TkB76aefiUKH97I8BOUYM/edit?usp=sharing)   
-* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2022/days1_3_mapping_variant_calling_handbook_Nov2022.md)  
+* [**SAM/BAM file formats** slides]()    
+* [**BAM refinement, QC & visualisation** slides]()  
+* [**Variant calling** slides]()   
+* [**Variant filtering** slides]()   
+* [Handbook for the practical sessions]()  
 
 #### Day 3:  
 
-* [**Variant filtering** slides](https://docs.google.com/presentation/d/1QboG7Oxv2Hv2CjajVKNRS5TkB76aefiUKH97I8BOUYM/edit?usp=sharing)   
-* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2022/days1_3_mapping_variant_calling_handbook_Nov2022.md)  
-* [**Variant calling SVs & CNVs** slides](https://docs.google.com/presentation/d/1_mAS3vU08wEniObk5N6tndym2NEtL8JFNRiQ-gNkP3A/edit?usp=share_link)  
-* [**Variant calling SVs & CNVs** handbook for the practical session](https://docs.google.com/document/d/1I33hU5T-zkVgXE5EwwWa0uJSSfJ-lbTRl8qWJ5Js-Ng/edit?usp=share_link)  
+* [**Variant calling SVs & CNVs** slides]()  
+* [**Variant calling SVs & CNVs** handbook for the practical session]()  
 
 #### Day 4:  
 
-* [**Scaling things up** slides](https://docs.google.com/presentation/d/1yqNiX9SYAP4Vp94fleayh-BbbxFOUhcQ/edit?usp=sharing&ouid=110304472558688375056&rtpof=true&sd=true)  
-* [**Scaling things up** handbook](https://github.com/seanlaidlaw/EBI-Bioinformatics-course-Scaling_things_up)  
-* [**Introduction to Github** slides](https://docs.google.com/presentation/d/1c8FLW79kK7SbYaSkryaYnjSmmcXkNi37?rtpof=true&authuser=sl31%40sanger.ac.uk&usp=drive_fs)  
-* [**Introduction to Github** handbook](https://github.com/seanlaidlaw/EBI-Introduction-to-Github)  
+* [**Scaling things up** slides]()  
+* [**Scaling things up** handbook]()  
+* [**Introduction to Github** slides]()  
+* [**Introduction to Github** handbook]()  
 
 #### Data:  
 
@@ -50,4 +51,5 @@ and any other useful resource for day1 to day4 of the EMBL-EBI
 
 #### Solutions:  
 
+* [Solutions to Introduction to BASH exercises](https://docs.google.com/document/d/1x-cYcSJElDcHXVU3X-XDlQMP1KtwAsnfOO8uQeY-Gy0/edit?usp=sharing)
 * [Solutions to exercises from Chiara](https://docs.google.com/document/d/1klA9Vu7l-c1CkdwfGkrdGxiMrIFHku2CWW6C-8i0ysA/edit?usp=sharing)  
