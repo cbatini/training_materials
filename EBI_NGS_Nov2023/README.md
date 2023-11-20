@@ -16,8 +16,8 @@ All materials are under a [CC BY 4.0 licence](https://creativecommons.org/licens
 #### Day 1:  
 
 * [**Overview of NGS technology** slides](https://docs.google.com/presentation/d/10lZmsmHofxLzNcmSo_ofJ6N4ejamstzBB1sGxcGlyIw/edit?usp=sharing)  
-* [**Quality control** slides]()  
-* [**Read mapping** slides]()  
+* [**Quality control** slides](https://docs.google.com/presentation/d/1XfDMpLkt14B9zowgpEV9OqD6IRaRO-VK4FCIzIaFiPA/edit?usp=sharing)  
+* [**Read mapping** slides](https://docs.google.com/presentation/d/1tH-8Wvjkn37g675mX_MyAeBxBMu-BSSOCX9_LhWh6tM/edit?usp=sharing)  
 * [**Before starting** the practical session slides](https://docs.google.com/presentation/d/1Dxum5R1DNrtSvcAqTEuxIOdgVM6XKb4F7WaBmRWNark/edit?usp=sharing)  
 * [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2023/days1_2_mapping_variant_calling_handbook_Nov2023.md)  
   
