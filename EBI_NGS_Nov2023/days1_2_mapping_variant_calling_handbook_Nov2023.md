@@ -1,6 +1,6 @@
 # NGS data: from initial QC to a ready-to-analyse variant set.  
 ### Chiara Batini  
-### Genome bioinformatics: resequencing and variant calling  
+### Genome bioinformatics: from short- to long-read sequencing  
 ### 14-18 November 2023  
 
 ## Summary  
