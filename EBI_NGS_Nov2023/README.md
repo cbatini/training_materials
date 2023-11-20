@@ -1,4 +1,4 @@
-## Genome bioinformatics: resequencing and variant calling  
+## Genome bioinformatics: from short- to long-read sequencing  
 ### 20-24 November 2023  
 
 You can find here the links to slides, handbook for the practical sessions, 
