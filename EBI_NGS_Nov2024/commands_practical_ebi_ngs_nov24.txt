@@ -1,0 +1,105 @@
+## sample list
+cd ~/Documents/SRS_fastq/
+ls *1M*fastq.gz | cut -f 1 -d '_' | uniq > ~/chiara/sample_list
+
+
+##run fastqc on all fastq files
+#fastqc <fastq_input_file>
+
+for sample in $(cat ../sample_list)
+do 
+
+fastqc ~/Documents/SRS_fastq/${sample}_3q29_1M.rev.fastq.gz -o .
+fastqc ~/Documents/SRS_fastq/${sample}_3q29_1M.fwd.fastq.gz -o .
+
+done
+	
+
+
+###on yeast files
+for lane in lane1 lane2
+do 
+
+fastqc ~/Documents/SRS_fastq_files_yeast/${lane}_R1.fastq -o .
+fastqc ~/Documents/SRS_fastq_files_yeast/${lane}_R2.fastq -o .
+
+done
+
+
+###trimmomatic on yeast
+for i in {1..2}
+
+do 
+
+java -jar /usr/local/Trimmomatic-0.39/trimmomatic-0.39.jar PE -phred33 -threads 1 -trimlog \
+lane${i}_trimm_logfile \
+~/Documents/SRS_fastq_files_yeast/lane${i}_R1.fastq ~/Documents/SRS_fastq_files_yeast/lane${i}_R2.fastq \
+lane${i}_R1.paired.fastq lane${i}_R1.unpaired.fastq \
+lane${i}_R2.paired.fastq lane${i}_R2.unpaired.fastq \
+ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36 &&
+
+
+java -jar /usr/local/Trimmomatic-0.39/trimmomatic-0.39.jar  PE -phred33 -threads 1 -trimlog \
+lane${i}_trimm_logfile2 \
+lane${i}_R1.paired.fastq lane${i}_R2.paired.fastq \
+lane${i}_R1.trim.paired.fastq lane${i}_R1.trim.unpaired.fastq \
+lane${i}_R2.trim.paired.fastq lane${i}_R2.trim.unpaired.fastq \
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15  MINLEN:36
+
+done
+	
+
+
+
+
+
+for sample in $(cat ../sample_list)
+do 
+
+bwa mem -R '@RG\tID:'"$sample"'\tLB:library\tPL:Illumina\tPU:lane\tSM:'"$sample"'' \
+chr3.fa \
+${sample}_3q29_1M.fwd.fastq.gz ${sample}_3q29_1M.rev.fastq.gz | \
+samtools view -b - | samtools sort - -o ${sample}_3q29_1M_sorted.bam  && 
+ 
+samtools index ${sample}_3q29_1M_sorted.bam
+
+done
+
+
+
+
+for sample in $(cat ../sample_list)
+do 
+
+qualimap bamqc -bam ~/Documents/SRS_bwa_bam_files/${sample}_3q29_1M_final.bam -nt 2 \
+-outdir ${sample}_qualimap
+
+done
+
+
+for sample in $(cat ../sample_list)
+do 
+
+qualimap bamqc -bam ~/Documents/SRS_bwa_bam_files/${sample}_3q29_1M_final.bam -nt 2 \
+-gff region -outdir ${sample}_region_qualimap
+
+done
+
+
+
+
+
+
+bwa mem -R '@RG\tID:'"$sample"'\tLB:library\tPL:Illumina\tPU:lane\tSM:'"$sample"'' \
+chr3.fa \
+${sample}_3q29_1M.fwd.fastq.gz ${sample}_3q29_1M.rev.fastq.gz | \
+samtools view -b - | samtools sort - -o ${sample}_3q29_1M_sorted.bam  && 
+ 
+samtools index ${sample}_3q29_1M_sorted.bam
+
+
+qualimap
+
+samtools view -b -h ERR2304566_3q29_1M_final.bam -L region -o ERR2304566_3q29_1M_region.bam
+~/qualimap_v2.3/qualimap bamqc -bam ERR2304566_3q29_1M_region.bam -gff region -outdir ERR2304566_region
+
