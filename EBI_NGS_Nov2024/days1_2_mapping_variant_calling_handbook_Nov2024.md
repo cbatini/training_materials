@@ -486,7 +486,7 @@ You have probably noticed that some of the metrics look odd, and many of the pos
 This is because our data comes from a subregion of chr3, but we haven't specified this when running qualimap.  
 Let's first create a file with the b38 region coordinates.  
 ```
-echo "chr3	195428934	197230596" > region3
+echo "chr3	195428934	197230596" > region
 ```
 
 And then let's re-run qualimap specifying the region.  
@@ -577,84 +577,73 @@ ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)
 * Use summary() in R to check the distribution in each table.  
 ---- 
 
-Right, so we have some pretty extreme coverage in one region.  
+Right, so we have some pretty extreme coverage in one region, ranging from 50,000X to 120,000X.  
 Discuss with your neighbour what you would do at this point.  
 
   
 
 
 <details>
-  <summary>Or you can click below to find out more!</summary>
-  
-###test  
+  <summary>Or you can click here to find out more!</summary>
+
+The region with extreme coverage overlaps with one of the regions on the 
+[ENCODE Blacklist](https://www.nature.com/articles/s41598-019-45839-z), a comprehensive list of 
+regions which are troublesome for high-throughput Next-Generation Sequencing (NGS) aligners. 
+These regions tend to have a very high ratio of multi-mapping to unique mapping reads and 
+high variance in mappability due to repetitive elements such as satellite, centromeric and telomeric repeats.
+
+Shall we try and look at the alignment until that region? Let's create a new region file.    
+```
+echo "chr3	195428934	196890000" > region_capped
+```
+
+And re-run qualimap.  
+```
+qualimap bamqc -bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam -gff region_capped -outdir ERR2304566_region_capped
+```
+
+----
+:question: :question: :question: :question: **Questions**  
+
+* How does the alignment look like now?    
+---- 
+
+There are in fact 7 ENCODE Blacklist regions in our region of interest:  
+
+* chr3:195477900-195507300
+* chr3:195616000-195750100
+* chr3:195775500-195791400
+* chr3:195914100-196028300
+* chr3:196249400-196251900
+* chr3:196897800-196899800
+* chr3:197030600-197035800
+
+So, just as example, let's look at a non-problematci part:  
+```
+chr3:196251900-196897800
+``` 
+
+```
+p1 <- cov %>%
+	filter( position > 196251900 & position < 196897800 ) %>%
+	ggplot( aes( x = position, y = coverage)) + 
+	geom_point() + 
+	geom_hline( yintercept = 30, colour = "red" ) +
+	ggtitle("Raw coverage") 
+	
+p2 <- hqcov %>%
+	filter( position > 196251900 & position < 196897800 ) %>%
+	ggplot( aes( x = position, y = coverage)) + 
+	geom_point() + 
+	ggtitle("Coverage after filtering BQ20 and MQ50")
+	
+ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)	
+	
+```
+
   
 </details>
 
-```
-p1 <- cov %>% 
-	filter( V3 < 300 ) %>%
-	ggplot( aes( x=V2, y=V3)) + 
-	geom_point() + 
-	xlim(195428935,196890000)
-	
-p2 <- hqcov %>% 
-	filter( V3 < 300 ) %>%
-	ggplot( aes( x=V2, y=V3)) + 
-	geom_point() + 
-	xlim(195428935,196890000)
-	
-ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)
-
-mapqual <- read.table("ERR2304566_mapping_quality", header=F)
-
-mapqual %>%
-	ggplot(aes(x=V2,y=V3) ) +
-	geom_point()
-
-
-mapqual %>%
-	ggplot(aes(x=V3) ) +
-	geom_histogram()
-
-
-```
-
-
-
-
-https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
-
-samtools view ERR2304566_3q29_1M_final.bam | cut -f 3,4,5 | grep -v '*' | sort > ERR2304566_mapping_quality
-
-## BAM QC with individual software tools 
-What follows is one of the possible ways of doing some of the things 
-you have seen in the plots produced by qualimap - some of the commands 
-below might be useful when you want to check something specific about your bam.  
-
-**Look at duplication metrics file from bam refinement**
-```
-gedit dupl_metrics.txt &
-```
-----
-:question: :question: :question: :question: **Questions**  
-
-* What's the percentage of duplicated reads?   
-----
-
-**Get samtools flagstat metrics**
-```
-samtools flagstat ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam		
-```
-
-```
-samtools flagstat library_final.bam	
-```
-
-----
-:question: :question: :question: :question: **Questions**  
-
-* Can you see any difference between samtools flagstat output before and after refinement?
-----
 
 
 ## BAM visualisation  
@@ -688,6 +677,12 @@ You can try to load the bam file for the whole alignment
 
 
 
+
+## Samtools flagstats   
+This can be a useful quick tool to have a look at alignments.  
+```
+samtools flagstat ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam		
+```
 
 
 
