@@ -580,11 +580,11 @@ ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)
 Right, so we have some pretty extreme coverage in one region.  
 Discuss with your neighbour what you would do at this point.  
 
-Or you can click below to find out more!  
+  
 
 
 <details>
-  <summary>Click me</summary>
+  <summary>Or you can click below to find out more!</summary>
   
 ###test  
   
