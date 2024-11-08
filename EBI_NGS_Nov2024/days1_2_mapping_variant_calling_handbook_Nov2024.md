@@ -1,4 +1,4 @@
-# NGS data: from initial QC to a ready-to-analyse variant set.  
+# NGS data: from reads QC to BAM QC.  
 ### Chiara Batini  
 ### Genome bioinformatics: from short- to long-read sequencing  
 ### 18-22 November 2024  
@@ -6,13 +6,14 @@
 ## Summary  
 
 Over the next three days, during the practical sessions, we will look at the 3q29 region of the human 
-genome. A deletion in this region is responsible for the Chromosome 3q29 microdeletion syndrome which is characterised by 
+genome. The region is characterised by two segmental duplication (SD) blocks that comprise different 
+SD segments with >98% sequence identity and are therefore [prone to non-allelic homologous 
+recombination](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01184-5).  
+A deletion in this region is responsible for the Chromosome 3q29 microdeletion syndrome which is characterised by 
 neurodevelopmental and/or psychiatric manifestations including mild-to-moderate intellectual disability, 
 autism spectrum disorder, anxiety disorders, attention-deficit/hyperactivity disorder, 
 executive function deficits, graphomotor weakness, and psychosis/schizophrenia. 
-The region is characterised by two segmental duplication (SD) blocks that comprise different 
-SD segments with >98% sequence identity and are therefore [prone to non-allelic homologous 
-recombination](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01184-5]).
+
 
 You will use this dataset throughout the course, but this handbook covers:  
 
@@ -41,25 +42,15 @@ sequencing effort. You can find information about the specifics of the sequencin
 
 In a nutshell, this is:  
  
-* Human genome, subset of chromosome 3: 1.8Mb
-* Whole genome sequencing  
+* Human genome, 1.8Mb region on chromosome 3   
+* Extracted from a whole genome sequencing experiment  
 * 150bp paired-end reads, 2 lanes  
 * expected average coverage: 30X  
 
-Samples included here:  
-
-HG01493	ERR3988888
-HG03519	ERR3989175
-HG03522	ERR2304566
-HG03579	ERR3989180
-HG03617	ERR3989186
-
-
-
-## Getting the data  
+## Getting the data - CHECK ON VM + REMOVE LANE2!  
 ### Getting the yeast data   
 
-A tar archive containing all the files needed for this practical (EBI_NGSBioinfo_Nov2023.tar) 
+A tar archive containing all the files needed for this practical 
 is available in the home directory (/home/training/chiara/).  
 **Create a directory to use for this practical**, move into it using `cd` and copy the tar archive there using this command:  
 ```
@@ -85,7 +76,7 @@ with the sequences of some of Illumina primers and adapters (primers_adapters.fa
 -----
 
 
-### Getting the human data  
+### Getting the human data - CHECK ON VM!  
 
 
 
@@ -124,14 +115,14 @@ will help direct the downstream trimming and adapter removal steps:
 ----
 :question: :question: :question: :question: **Questions**  
 
-* What is the total number of sequences in each of the paired end fastq files? Do both lanes provide the same sequencing output (same number of reads)?
-* What is the length of the sequences in the fastq files? Is the length the same for both lanes?
+* What is the total number of sequences in each of the paired end fastq files?  
+* What is the length of the sequences in the fastq files?   
 * How is the quality of the reads across the pair? Is one read better than the other?
 * Is there any issue with the data?
-* Can you write a loop in bash to process all fastq files?  
+* Can you write a loop in bash to process both fastq files?  
 ----
 
-Now **explore one sample** in FastQC and compare to what you have observed so far:  
+Now **explore one human sample** in FastQC and compare to what you have observed so far:  
 ----
 :question: :question: :question: :question: **Questions**  
 
@@ -142,7 +133,7 @@ Now **explore one sample** in FastQC and compare to what you have observed so fa
 ----
 
 
-## Use Trimmomatic to remove primer and adapter sequences   
+## Use Trimmomatic to remove primer and adapter sequences - CHANGE FILE NAMES!!!   
 
 **Trimmomatic** is a java tool for performing a range of trimming tasks 
 on Illumina paired end and single end read data. The manual can be found [here](https://github.com/usadellab/Trimmomatic/blob/main/README.md). 
@@ -159,21 +150,12 @@ and primer sequences or it can be customised. In this case we will use the prepa
 `primers_adapters.fa` file that contains the sequences indicated in FastQC and their 
 reverse complement sequences.  
 
-for lane1
+
 ```
 trimmomatic.sh PE -phred33 -threads 1 -trimlog \
 lane1/trimm_logfile lane1/s-7-1.fastq lane1/s-7-2.fastq \
 lane1/s-7-1.paired.fastq lane1/s-7-1.unpaired.fastq \
 lane1/s-7-2.paired.fastq lane1/s-7-2.unpaired.fastq \
-ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36
-```
-
-for lane2
-```
-trimmomatic.sh PE -phred33 -threads 1 -trimlog \
-lane2/trimm_logfile lane2/s-7-1.fastq lane2/s-7-2.fastq \
-lane2/s-7-1.paired.fastq lane2/s-7-1.unpaired.fastq \
-lane2/s-7-2.paired.fastq lane2/s-7-2.unpaired.fastq \
 ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36
 ```
 
@@ -203,14 +185,14 @@ what is the number and percentage of read pairs that ‘both survived’ adapter
 * How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
 ----
 
-## Use Trimmomatic to trim low quality bases
+## Use Trimmomatic to trim low quality bases - CHANGE FILE NAMES!!!
 The FastQC *Per Base Sequence Quality* module has already told us that there could be 
 some issues with the quality scores of the last few bases of the reads, especially for 
 read2 in both lanes. We will use Trimmomatic to trim poor quality bases from the 3’ 
 end of the reads. Trimmomatic also checks the 5’ end for poor quality bases. 
 The command below will carry out the trimming on the adapter trimmed fastq files we created above.
 
-for lane1
+
 ```
 trimmomatic.sh PE -phred33 -threads 1 -trimlog \
 lane1/trimm_logfile2 \
@@ -219,17 +201,6 @@ lane1/s-7-1.trim.paired.fastq lane1/s-7-1.trim.unpaired.fastq \
 lane1/s-7-2.trim.paired.fastq lane1/s-7-2.trim.unpaired.fastq \
 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15  MINLEN:36
 ```
-
-for lane2
-```
-trimmomatic.sh PE -phred33 -threads 1 -trimlog \
-lane2/trimm_logfile2 \
-lane2/s-7-1.paired.fastq lane2/s-7-2.paired.fastq \
-lane2/s-7-1.trim.paired.fastq lane2/s-7-1.trim.unpaired.fastq \
-lane2/s-7-2.trim.paired.fastq lane2/s-7-2.trim.unpaired.fastq \
-LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15  MINLEN:36
-```
-
 
 
 
@@ -261,13 +232,13 @@ with FastQC before proceeding to alignment.
 -----
 
 ## Alignment to a reference genome  
-From now on we will focus on the human dataset and for convenience we are using only chromosome 3 
+From now on we will focus only on the human dataset and for convenience we are using only chromosome 3 
 as the reference we are mapping too, rather than the whole human genome.  
 
 ### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard   
 
 Indices are necessary for quick access to specific information in very large files. 
-Here we will create indices for the Saccharomyces reference genome for tools we will 
+Here we will create indices for the chromosome 3 (our reference genome) for tools we will 
 use downstream in the pipeline. 
 For example the samtools index file, `ref_name.fai`, stores records of sequence identifier, 
 length, the offset of the first sequence character in the file, the number of characters per 
@@ -314,14 +285,14 @@ high-quality data as it is faster and more accurate than previous ones.
 
 **Align reads using bwa mem**   
 
-For this step we will use a small subset dataset from sample ERR2304566.  
-```
+For this step we will use a small subset dataset from sample ERR2304566 as 
+an example dataset, but you will then access the full alignment files at the end.  
 
+```
 bwa mem -R '@RG\tID:'ERR2304566'\tLB:library\tPL:Illumina\tPU:lane\tSM:'ERR2304566'' \
 chr3.fa \
 ~/Documents/SRS_fastq/subset/ERR2304566_3q29_1M_final_subset_R1.fastq.gz \
 ~/Documents/SRS_fastq/subset/ERR2304566_3q29_1M_final_subset_R2.fastq.gz > ERR2304566.sam
-
 ```
 
 
@@ -379,7 +350,7 @@ samtools index ERR2304566_3q29_1M_sorted.bam
 -----
 
 
-Now we will pipe the commands we have used above to avoid saving all the itnerim files. We are using:  
+Now we will pipe the commands we have used above to avoid saving all the interim files. We are using:  
 
 * the symbol `|` (pipe): it indicates that the output of the command before 
 the symbol should be used as the input of the command after the symbol  
@@ -400,7 +371,7 @@ samtools index ERR2304566_3q29_1M_sorted.bam
 
 ## BAM refinement  
 
-BAM refinement has three steps:  
+BAM refinement traidtionally has three steps:  
 
 1. local realignment  
 2. base quality recalibration  
@@ -411,9 +382,8 @@ We will not run the first two steps in this practical, because:
 * **local realignment is not included anymore in the best practice (by GATK)** 
 (and is not available as a tool in GATK 4) because the haplotype-based variant 
 callers will take care of this issue during variant calling;  
-* base quality recalibration is a slow process that takes time to run 
-and requires a good list of variant sites for the species in consideration 
-(e.g. for humans the latest version of dbSNP)  
+* base quality recalibration is a slow process that takes time to run  
+(e.g. for human data the latest version of dbSNP)  
 You can find more information and command line examples [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890531-Base-Quality-Score-Recalibration-BQSR-).   
 In the same page there is a paragraph ("No excuses") with suggestions on how to proceed when 
 you don’t have a good catalog of variant sites for your species.  
@@ -425,29 +395,15 @@ and amplify the effects of mis-calls. We will remove duplicates
 using picard MarkDuplicates. As you may have guessed, 
 picard doesn’t actually remove the duplicates, 
 but it marks the reads in the bam by using the bitwise flag.  
-```
 
+```
 picard MarkDuplicates INPUT=ERR2304566_3q29_1M_sorted.bam \
 OUTPUT=ERR2304566_3q29_1M_final.bam METRICS_FILE=ERR2304566_dupl_metrics.txt &&
-
-samtools index ${sample}_3q29_1M_final.bam 
-
-
-for sample in $(cat ../sample_list)
-do 
-
-picard MarkDuplicates INPUT=${sample}_3q29_1M_sorted.bam \
-OUTPUT=${sample}_3q29_1M_final.bam METRICS_FILE=${sample}_dupl_metrics.txt &&
-
-samtools index ${sample}_3q29_1M_final.bam 
-
-done
-
 ```
 ----
 :question: :question: :question: :question: **Questions**  
 
-* Index library_final.bam file  
+* Index ERR2304566_3q29_1M_final.bam file  
 ----
 
 ## BAM QC with qualimap  
@@ -458,11 +414,13 @@ qualimap &
 ```  
 
 You can then proceed to upload your bam file by selecting a New Analysis in the File panel,    
-or you can produce an html report for your final bam.
+or you can produce an html report for your final bam using the command line.
 
 Here blow the command line for one sample:  
 ```
-qualimap bamqc -bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam -outdir ERR2304566_qualimap_report
+qualimap bamqc \
+	-bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam \
+	-outdir ERR2304566_qualimap_report
 ```  
 
 If you are interested about other options: http://qualimap.conesalab.org/doc_html/command_line.html   
@@ -483,15 +441,18 @@ following questions for sample ERR2304566 to understand the quality of your alig
 -----
 
 You have probably noticed that some of the metrics look odd, and many of the positions have coverage zero.  
-This is because our data comes from a subregion of chr3, but we haven't specified this when running qualimap.  
-Let's first create a file with the b38 region coordinates.  
+This is because our data comes from a subregion of chromosome 3, but we haven't specified this when running qualimap.  
+Let's first create a file ("region") with the b38 region coordinates.  
 ```
-echo "chr3	195428934	197230596" > region
+echo -e "chr3\t195428934\t197230596" > region.bed
 ```
 
 And then let's re-run qualimap specifying the region.  
 ```
-qualimap bamqc -bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam -gff region -outdir ERR2304566_region
+qualimap bamqc \
+	-bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam \
+	-gff region.bed \
+	-outdir ERR2304566_region
 ```
 
 
@@ -512,10 +473,13 @@ Please note that not all the plots focus on the region only, but might still use
 
 
 ## Calculating coverage with samtools  
-We are now focusing on our region of interest and calculate the avergae coverage 
+We are now focusing on our region of interest and calculate the average coverage 
 for each position.  
 ```
-samtools depth -a -b region ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam > ERR2304566_coverage_region
+samtools depth \
+	-a \
+	-b region.bed \
+	~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam > ERR2304566_coverage_region
 ```
 ----
 :question: :question: :question: :question: **Questions**  
@@ -530,8 +494,8 @@ minimum BQ 20 and a minimum MQ 50 (do you know how and where to specify this in 
 ---- 
 Options used:    
                                                                                                                                                                                                                                                              
-* `-a`: Output all positions (including those with zero depth)  
-* `-r`: Only report depth in specified region  
+* `-a`: Output all positions (including those with zero depth)    
+* `-b`: Use bed FILE for list of regions  
 * `-q`: Only count reads with base quality greater than INT  
 * `-Q`: Only count reads with mapping quality greater than INT
 
@@ -574,11 +538,11 @@ ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)
 :question: :question: :question: :question: **Questions**  
 
 * Looking at the plots, have the filters impacted the coverage much?  
-* Use summary() in R to check the distribution in each table.  
+* Use summary() in R to check the coverage distribution in each table.  
 ---- 
 
 Right, so we have some pretty extreme coverage in one region, ranging from 50,000X to 120,000X.  
-Discuss with your neighbour what you would do at this point.  
+**Discuss with your neighbour what you would do at this point.**  
 
   
 
@@ -589,17 +553,19 @@ Discuss with your neighbour what you would do at this point.
 The region with extreme coverage overlaps with one of the regions on the 
 [ENCODE Blacklist](https://www.nature.com/articles/s41598-019-45839-z), a comprehensive list of 
 regions which are troublesome for high-throughput Next-Generation Sequencing (NGS) aligners. 
-These regions tend to have a very high ratio of multi-mapping to unique mapping reads and 
-high variance in mappability due to repetitive elements such as satellite, centromeric and telomeric repeats.
+These regions tend to have a very high variance in mappability due to repetitive elements such as satellite, centromeric and telomeric repeats.
 
-Shall we try and look at the alignment until that region? Let's create a new region file.    
+Shall we try and look at the alignment before that region? Let's create a new region file.    
 ```
-echo "chr3	195428934	196890000" > region_capped
+echo -e "chr3\t195428934\t196890000" > region_capped.bed
 ```
 
 And re-run qualimap.  
 ```
-qualimap bamqc -bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam -gff region_capped -outdir ERR2304566_region_capped
+qualimap bamqc \
+	-bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam \
+	-gff region_capped.bed \
+	-outdir ERR2304566_region_capped
 ```
 
 ----
@@ -618,7 +584,7 @@ There are in fact 7 ENCODE Blacklist regions in our region of interest:
 * chr3:196897800-196899800
 * chr3:197030600-197035800
 
-So, just as example, let's look at a non-problematci part:  
+So, just as an example, let's look at a non-problematci part:  
 ```
 chr3:196251900-196897800
 ``` 
@@ -635,11 +601,19 @@ p2 <- hqcov %>%
 	filter( position > 196251900 & position < 196897800 ) %>%
 	ggplot( aes( x = position, y = coverage)) + 
 	geom_point() + 
+	geom_hline( yintercept = 30, colour = "red" ) + 
 	ggtitle("Coverage after filtering BQ20 and MQ50")
 	
 ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)	
 	
 ```
+
+
+----
+:question: :question: :question: :question: **Questions**  
+
+* Does this look reasonable to you?       
+---- 
 
   
 </details>
@@ -647,36 +621,17 @@ ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)
 
 
 ## BAM visualisation  
-We will extract mtDNA from final the BAM to have a smaller file to visualise.
-```
-samtools view -bh -o mito.bam library_final.bam Mito
-```  
-----
-:question: :question: :question: :question: **Questions**  
-
-* Index the mito bam file  
-* Do you know why we have used Mito to extract the mtDNA? Check your dictionary or your bam header.  
-----
 
 We will use IGV to visualise our alignment and, as it is installed on this container, you can just type:
 ```
 igv &
 ```  
 
-However, it is good to know that you can use the java web start version of IGV.  
-Follow this link: https://igv.org/app/   
- 
-**In either case, be patient when you use IGV!**  
-
-You will see that the default reference genome loaded is Human hg19. 
 Load your reference genome (check Genomes - Load Genome from File) 
-and then your bam file (check File - Load from File).  
+and then one of the bam files (check File - Load from File).  
 
-You can try to load the bam file for the whole alignment 
-(library_final.bam) but it may take some time.
-
-
-
+Use the navigation box to go and have a look at some of the regions we 
+discussed above.  
 
 ## Samtools flagstats   
 This can be a useful quick tool to have a look at alignments.  
