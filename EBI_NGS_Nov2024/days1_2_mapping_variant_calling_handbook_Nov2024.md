@@ -57,7 +57,7 @@ is available for download [here](https://drive.google.com/file/d/1-Mebr-tAr9V1JV
 cp -r mv ~/Downloads/EBI_NGSBioinfo_yeast.tar .
 ```
 
-**Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
+**Please DO NOT work in any shared directory. If unsure, use `pwd` to check in which directory you are.**  
 You can then open this file using the command:  
 ```
 tar -xvf EBI_NGSBioinfo_yeast.tar
@@ -78,10 +78,10 @@ You will not need all these files, just the read data.
 
 
 ### Getting the human data    
-You should have the following directory in your `~/Documents/` directory:  
+You should have the following directories in your `~/Documents/` :  
 
 * `SRS_fastq`: it contains all fastq files   
-* `SRS_bwa_bam_files`: it contains all the final short-reads alignments for the five human samples  
+* `SRS_bwa_bam_files`: it contains all the final short-reads alignments for the five human samples as well as the reference sequence    
 
 You will use these files throughout the practical sessions.  
 
