@@ -87,7 +87,7 @@ done
 
 
 
-
+samtools depth -a -q 20 -Q 50 -b region ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam > ERR2304566_coverage_region_hq
 
 
 bwa mem -R '@RG\tID:'"$sample"'\tLB:library\tPL:Illumina\tPU:lane\tSM:'"$sample"'' \
@@ -103,3 +103,31 @@ qualimap
 samtools view -b -h ERR2304566_3q29_1M_final.bam -L region -o ERR2304566_3q29_1M_region.bam
 ~/qualimap_v2.3/qualimap bamqc -bam ERR2304566_3q29_1M_region.bam -gff region -outdir ERR2304566_region
 
+
+https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
+
+samtools view ERR2304566_3q29_1M_final.bam | cut -f 3,4,5 | grep -v '*' | sort > ERR2304566_mapping_quality
+
+
+
+
+Samples included here:  
+
+HG01493	ERR3988888
+HG03519	ERR3989175
+HG03522	ERR2304566
+HG03579	ERR3989180
+HG03617	ERR3989186
+
+
+
+
+for sample in $(cat ../sample_list)
+do 
+
+picard MarkDuplicates INPUT=${sample}_3q29_1M_sorted.bam \
+OUTPUT=${sample}_3q29_1M_final.bam METRICS_FILE=${sample}_dupl_metrics.txt &&
+
+samtools index ${sample}_3q29_1M_final.bam 
+
+done

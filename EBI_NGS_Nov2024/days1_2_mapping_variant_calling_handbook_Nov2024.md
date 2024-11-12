@@ -47,26 +47,27 @@ In a nutshell, this is:
 * 150bp paired-end reads, 2 lanes  
 * expected average coverage: 30X  
 
-## Getting the data - CHECK ON VM + REMOVE LANE2!  
-### Getting the yeast data   
+## Getting the data    
+### Getting the yeast data      
 
 A tar archive containing all the files needed for this practical 
-is available in the home directory (/home/training/chiara/).  
+is available for download [here](https://drive.google.com/file/d/1-Mebr-tAr9V1JVX3BTADAZx2HVIwZwcr/view?usp=sharing).  
 **Create a directory to use for this practical**, move into it using `cd` and copy the tar archive there using this command:  
 ```
-cp -r ~/Documents/SRS_fastq/ .
+cp -r mv ~/Downloads/EBI_NGSBioinfo_yeast.tar .
 ```
 
 **Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
 You can then open this file using the command:  
 ```
-tar -xvf EBI_NGSBioinfo_Nov2023.tar
+tar -xvf EBI_NGSBioinfo_yeast.tar
 ```
 
 You should now find a folder called **VariantCalling** containing read data 
 (in subfolders lane1, lane2), a reference genome (Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa), 
 a file with the coordinates of the yeast mtDNA (mito.intervals), and a file 
 with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
+You will not need all these files, just the read data.   
 
 -----
 :question: :question: :question: :question: **Questions:**  
@@ -76,9 +77,13 @@ with the sequences of some of Illumina primers and adapters (primers_adapters.fa
 -----
 
 
-### Getting the human data - CHECK ON VM!  
+### Getting the human data    
+You should have the following directory in your `~/Documents/` directory:  
 
+* `SRS_fastq`: it contains all fastq files   
+* `SRS_bwa_bam_files`: it contains all the final short-reads alignments for the five human samples  
 
+You will use these files throughout the practical sessions.  
 
 ## Assess the quality of the data using FastQC
 [**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) 
@@ -100,7 +105,7 @@ fastqc <fastq_input_file>
 ```
 You will then be able to open the html report using `firefox <html_file> &`.  
 
-**Upload, or process on the command line, the yeast fastq files** and 
+**Upload, or process on the command line, the lane1 yeast fastq files** and 
 work your way through the analysis modules on the left hand side of the FastQC window/html, 
 using the [FastQC documentation](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/), 
 familiarize yourself with what each module is showing. 
@@ -133,7 +138,7 @@ Now **explore one human sample** in FastQC and compare to what you have observed
 ----
 
 
-## Use Trimmomatic to remove primer and adapter sequences - CHANGE FILE NAMES!!!   
+## Use Trimmomatic to remove primer and adapter sequences    
 
 **Trimmomatic** is a java tool for performing a range of trimming tasks 
 on Illumina paired end and single end read data. The manual can be found [here](https://github.com/usadellab/Trimmomatic/blob/main/README.md). 
@@ -150,9 +155,10 @@ and primer sequences or it can be customised. In this case we will use the prepa
 `primers_adapters.fa` file that contains the sequences indicated in FastQC and their 
 reverse complement sequences.  
 
+**Move into the VariantCalling directory**
 
 ```
-trimmomatic.sh PE -phred33 -threads 1 -trimlog \
+java -jar /usr/local/Trimmomatic-0.39/trimmomatic-0.39.jar PE -phred33 -threads 1 -trimlog \
 lane1/trimm_logfile lane1/s-7-1.fastq lane1/s-7-2.fastq \
 lane1/s-7-1.paired.fastq lane1/s-7-1.unpaired.fastq \
 lane1/s-7-2.paired.fastq lane1/s-7-2.unpaired.fastq \
@@ -185,7 +191,7 @@ what is the number and percentage of read pairs that ‘both survived’ adapter
 * How many pairs of reads have been trimmed and then deleted by Trimmomatic in this step?      
 ----
 
-## Use Trimmomatic to trim low quality bases - CHANGE FILE NAMES!!!
+## Use Trimmomatic to trim low quality bases  
 The FastQC *Per Base Sequence Quality* module has already told us that there could be 
 some issues with the quality scores of the last few bases of the reads, especially for 
 read2 in both lanes. We will use Trimmomatic to trim poor quality bases from the 3’ 
@@ -194,7 +200,7 @@ The command below will carry out the trimming on the adapter trimmed fastq files
 
 
 ```
-trimmomatic.sh PE -phred33 -threads 1 -trimlog \
+java -jar /usr/local/Trimmomatic-0.39/trimmomatic-0.39.jar PE -phred33 -threads 1 -trimlog \
 lane1/trimm_logfile2 \
 lane1/s-7-1.paired.fastq lane1/s-7-2.paired.fastq \
 lane1/s-7-1.trim.paired.fastq lane1/s-7-1.trim.unpaired.fastq \
@@ -233,7 +239,9 @@ with FastQC before proceeding to alignment.
 
 ## Alignment to a reference genome  
 From now on we will focus only on the human dataset and for convenience we are using only chromosome 3 
-as the reference we are mapping too, rather than the whole human genome.  
+as the reference we are mapping to, rather than the whole human genome.  
+
+**Create a directory for this exercise (.e.g "mapping") and work into that directory.**
 
 ### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard   
 
