@@ -1,0 +1,82 @@
+---
+title: "Main plots for EBI NGS practicals"
+author: "Chiara Batini"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: "cerulean"
+    toc: true
+    toc_float: true
+    toc_depth: 5
+    code_folding: hide
+---
+
+
+```{r setup, message = FALSE, echo = TRUE}
+knitr::opts_chunk$set(message = FALSE, echo = TRUE, warning = FALSE)
+date <- gsub("-","_",Sys.Date())
+options(scipen=9999)
+library(tidyverse)
+library(readxl)
+library(exceedapi)
+library(ggpubr)
+library(scales)
+library(rstatix)
+library(kableExtra)
+options(dplyr.print_max = Inf)
+options(dplyr.width = Inf)
+"%ni%" <- Negate("%in%")
+
+dir <- "/scratch/gen1/cb334/ebi_ngs/"
+
+```
+
+
+## Plots of the whole region   
+
+```{r, eval = T }
+cov <- read.table(paste0(dir,"ERR2304566_coverage_region"), header=F) %>% 
+	rename( position = V2,
+		coverage = V3 ) 
+		
+hqcov <- read.table(paste0(dir,"ERR2304566_coverage_region_hq"), header=F) %>% 
+	rename( position = V2,
+		coverage = V3 )
+
+p1 <- cov %>%
+	ggplot( aes( x = position, y = coverage)) + 
+	geom_point() + 
+	ylim(0,160000) + 
+	ggtitle("Raw coverage")
+	
+p2 <- hqcov %>%
+	ggplot( aes( x = position, y = coverage)) + 
+	geom_point() + 
+	ylim(0,160000) + 
+	ggtitle("Coverage after filtering BQ20 and MQ50")
+	
+ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)
+```
+
+
+## Plots of a non-problematic part of the region   
+
+```{r, eval = T }
+p1 <- cov %>%
+	filter( position > 196251900 & position < 196897800 ) %>%
+	ggplot( aes( x = position, y = coverage)) + 
+	geom_point() + 
+	geom_hline( yintercept = 30, colour = "red" ) +
+	ggtitle("Raw coverage") 
+	
+p2 <- hqcov %>%
+	filter( position > 196251900 & position < 196897800 ) %>%
+	ggplot( aes( x = position, y = coverage)) + 
+	geom_point() + 
+	geom_hline( yintercept = 30, colour = "red" ) + 
+	ggtitle("Coverage after filtering BQ20 and MQ50")
+	
+ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)	
+	
+```
+   
