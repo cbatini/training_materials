@@ -31,7 +31,7 @@ You will use this dataset throughout the course, but this handbook covers:
 
 * Yeast genome: 12.5 Mbp; 16 chromosomes  
 * Whole genome sequencing  
-* 108bp paired-end reads  
+* 108bp paired-end reads, 2 lanes  
 
 
 **After performing quality control** on the yeast data we will look at 
@@ -44,7 +44,7 @@ In a nutshell, this is:
  
 * Human genome, 1.8Mb region on chromosome 3   
 * Extracted from a whole genome sequencing experiment  
-* 150bp paired-end reads, 2 lanes  
+* 150bp paired-end reads  
 * expected average coverage: 30X  
 
 ## Getting the data    
@@ -67,7 +67,8 @@ You should now find a folder called **VariantCalling** containing read data
 (in subfolders lane1, lane2), a reference genome (Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa), 
 a file with the coordinates of the yeast mtDNA (mito.intervals), and a file 
 with the sequences of some of Illumina primers and adapters (primers_adapters.fa).  
-You will not need all these files, just the read data.   
+
+**You will not need all these files, just the read data and the primers and adapters file.**     
 
 -----
 :question: :question: :question: :question: **Questions:**  
@@ -80,10 +81,10 @@ You will not need all these files, just the read data.
 ### Getting the human data    
 You should have the following directories in your `~/Documents/` :  
 
-* `SRS_fastq`: it contains all fastq files   
+* `SRS_fastq`: it contains all the fastq files   
 * `SRS_bwa_bam_files`: it contains all the final short-reads alignments for the five human samples as well as the reference sequence    
 
-You will use these files throughout the practical sessions.  
+You will use these files throughout the practical sessions of days1-3.  
 
 ## Assess the quality of the data using FastQC
 [**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) 
@@ -128,6 +129,7 @@ will help direct the downstream trimming and adapter removal steps:
 ----
 
 Now **explore one human sample** in FastQC and compare to what you have observed so far:  
+ 
 ----
 :question: :question: :question: :question: **Questions**  
 
@@ -143,7 +145,7 @@ Now **explore one human sample** in FastQC and compare to what you have observed
 **Trimmomatic** is a java tool for performing a range of trimming tasks 
 on Illumina paired end and single end read data. The manual can be found [here](https://github.com/usadellab/Trimmomatic/blob/main/README.md). 
 
-**Using the yeast dataset** go back to the overrepresented sequences module of FastQC. 
+**Using only lane1 of the yeast dataset** go back to the overrepresented sequences module of FastQC. 
 This is where FastQC would tell you if a significant proportion (>1%) 
 of your reads are contaminated with adapter sequences. As you can see from 
 the *Possible Source* column, FastQC has found a number of reads contaminated 
@@ -151,7 +153,7 @@ with different Illumina primer and adapter sequences, so we will run Trimmomatic
 
 Trimmomatic needs a fasta file containing the sequences you want to trim from your data; 
 this can be created by using fasta files provided that contain the standard Illumina adapter 
-and primer sequences or it can be customised. In this case we will use the prepared 
+and primer sequences or it can be customised. In this case we will use the pre-prepared 
 `primers_adapters.fa` file that contains the sequences indicated in FastQC and their 
 reverse complement sequences.  
 
@@ -205,7 +207,7 @@ lane1/trimm_logfile2 \
 lane1/s-7-1.paired.fastq lane1/s-7-2.paired.fastq \
 lane1/s-7-1.trim.paired.fastq lane1/s-7-1.trim.unpaired.fastq \
 lane1/s-7-2.trim.paired.fastq lane1/s-7-2.trim.unpaired.fastq \
-LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15  MINLEN:36
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 ```
 
 
@@ -232,8 +234,7 @@ The parameters used in this command are defined as follows:
 -----
 :question: :question: :question: :question: **Questions**  
 
-* Check the final fastq files (lane*/s-7-1.trim.paired.fastq and lane*/s-7-2.trim.paired.fastq) 
-with FastQC before proceeding to alignment.
+* Check the final fastq files (lane1/s-7-1.trim.paired.fastq and lane1/s-7-2.trim.paired.fastq) with FastQC.
 * Is there any trimming that you think should be performed on the human dataset?  
 -----
 
@@ -241,7 +242,7 @@ with FastQC before proceeding to alignment.
 From now on we will focus only on the human dataset and for convenience we are using only chromosome 3 
 as the reference we are mapping to, rather than the whole human genome.  
 
-**Create a directory for this exercise (.e.g "mapping") and work into that directory.**
+**Create a directory for this exercise (e.g. "mapping") and work into that directory.**
 
 ### 1. Create index and dictionary files of the reference genome using samtools, bwa and picard   
 
@@ -267,9 +268,8 @@ samtools faidx chr3.fa
 bwa index -a is chr3.fa
 ```
 `-a is`	Sets the algorithm to be used to construct a suffix array to the IS 
-linear-time algorithm. It requires 5.37N memory where N is the size of the database. 
-IS is moderately fast, but does not work with database larger than 2GB. 
-IS is the default algorithm due to its simplicity. 
+linear-time algorithm. IS is moderately fast and it is the default algorithm due to its simplicity, 
+but does not work with database larger than 2GB.  
 For the whole human genome you would need to use the algorithm implemented in BWT-SW. 
 
 **picard dictionary**
@@ -375,11 +375,18 @@ samtools view -b - | samtools sort - -o ERR2304566_3q29_1M_sorted.bam &&
 samtools index ERR2304566_3q29_1M_sorted.bam
 ```  
 
+-----
+:question: :question: :question: :question: **Questions**  
+
+* Can you write a loop using this piped command to mapp all five human samples and index the final bam files?    
+-----
+
+
 # END OF DAY1
 
 ## BAM refinement  
 
-BAM refinement traidtionally has three steps:  
+BAM refinement traditionally has three steps:  
 
 1. local realignment  
 2. base quality recalibration  
@@ -390,8 +397,8 @@ We will not run the first two steps in this practical, because:
 * **local realignment is not included anymore in the best practice (by GATK)** 
 (and is not available as a tool in GATK 4) because the haplotype-based variant 
 callers will take care of this issue during variant calling;  
-* base quality recalibration is a slow process that takes time to run  
-(e.g. for human data the latest version of dbSNP)  
+* base quality recalibration is a slow process that takes time to run, 
+but **it is an important process nevertheless**! 
 You can find more information and command line examples [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035890531-Base-Quality-Score-Recalibration-BQSR-).   
 In the same page there is a paragraph ("No excuses") with suggestions on how to proceed when 
 you don’t have a good catalog of variant sites for your species.  
@@ -450,7 +457,7 @@ following questions for sample ERR2304566 to understand the quality of your alig
 
 You have probably noticed that some of the metrics look odd, and many of the positions have coverage zero.  
 This is because our data comes from a subregion of chromosome 3, but we haven't specified this when running qualimap.  
-Let's first create a file ("region") with the b38 region coordinates.  
+Let's first create a bed file with the b38 region coordinates.  
 ```
 echo -e "chr3\t195428934\t197230596" > region.bed
 ```
@@ -489,6 +496,14 @@ samtools depth \
 	-b region.bed \
 	~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam > ERR2304566_coverage_region
 ```
+Options used:    
+                                                                                                                                                                                                                                                             
+* `-a`: Output all positions (including those with zero depth)    
+* `-b`: Use bed FILE for list of regions  
+* `-q`: Only count reads with base quality greater than INT  
+* `-Q`: Only count reads with mapping quality greater than INT
+
+
 ----
 :question: :question: :question: :question: **Questions**  
 
@@ -500,15 +515,9 @@ minimum BQ 20 and a minimum MQ 50 (do you know how and where to specify this in 
 	+ check how many positions have coverage 0, or equal to and greater than 4 
 	(or any other threshold you are curious about)  
 ---- 
-Options used:    
-                                                                                                                                                                                                                                                             
-* `-a`: Output all positions (including those with zero depth)    
-* `-b`: Use bed FILE for list of regions  
-* `-q`: Only count reads with base quality greater than INT  
-* `-Q`: Only count reads with mapping quality greater than INT
 
 
-Use the code below in R.   
+**Use the code below in R**.   
 
 Load these two libraries in R at the beginning of the session.  
 If ggpubr is unavailable just install it quickly before starting.    
@@ -518,7 +527,7 @@ library(tidyverse)
 library(ggpubr)
 ```
 
-Now let's look at the coverage distribution with and without qualit filters.  
+Now let's look at the coverage distribution with and without quality filters.  
 ```
 cov <- read.table("ERR2304566_coverage_region", header=F) %>% 
 	rename( position = V2,
@@ -560,7 +569,7 @@ Right, so we have some pretty extreme coverage in one region, ranging from 50,00
 
 The region with extreme coverage overlaps with one of the regions on the 
 [ENCODE Blacklist](https://www.nature.com/articles/s41598-019-45839-z), a comprehensive list of 
-regions which are troublesome for high-throughput Next-Generation Sequencing (NGS) aligners. 
+regions which are troublesome for high-throughput NGS aligners. 
 These regions tend to have a very high variance in mappability due to repetitive elements such as satellite, centromeric and telomeric repeats.
 
 Shall we try and look at the alignment before that region? Let's create a new region file.    
@@ -630,12 +639,12 @@ ggarrange(plotlist = list(p1,p2), ncol = 1, nrow = 2)
 
 ## BAM visualisation  
 
-We will use IGV to visualise our alignment and, as it is installed on this container, you can just type:
+We can use IGV to visualise our alignment and, as it is installed on this VM, you can just type:
 ```
 igv &
 ```  
 
-Load your reference genome (check Genomes - Load Genome from File) 
+Load your chr3.fa reference genome (check Genomes - Load Genome from File) 
 and then one of the bam files (check File - Load from File).  
 
 Use the navigation box to go and have a look at some of the regions we 
