@@ -6,13 +6,13 @@
 ## Summary  
 
 Over the next three days, during the practical sessions, we will look at the 3q29 region of the human 
-genome. The region is characterised by two segmental duplication (SD) blocks that comprise different 
-SD segments with >98% sequence identity and are therefore [prone to non-allelic homologous 
-recombination](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01184-5).  
-A deletion in this region is responsible for the Chromosome 3q29 microdeletion syndrome which is characterised by 
-neurodevelopmental and/or psychiatric manifestations including mild-to-moderate intellectual disability, 
-autism spectrum disorder, anxiety disorders, attention-deficit/hyperactivity disorder, 
-executive function deficits, graphomotor weakness, and psychosis/schizophrenia. 
+genome. The region is characterised by three segmental duplication blocks with >98% sequence identity 
+and are therefore [prone to non-allelic homologous recombination](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01184-5).  
+A deletion or duplication in this region are responsible for the 3q29 Deletion/Duplication Syndromes 
+which are characterised by neurodevelopmental and/or psychiatric manifestations including 
+mild-to-moderate intellectual disability, autism spectrum disorder, anxiety disorders, 
+attention-deficit/hyperactivity disorder, executive function deficits, 
+graphomotor weakness, and psychosis/schizophrenia. 
 
 
 You will use this dataset throughout the course, but this handbook covers:  
