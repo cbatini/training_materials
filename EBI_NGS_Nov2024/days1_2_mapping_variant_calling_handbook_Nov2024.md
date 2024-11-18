@@ -413,12 +413,12 @@ but it marks the reads in the bam by using the bitwise flag.
 
 ```
 picard MarkDuplicates INPUT=ERR2304566_3q29_1M_sorted.bam \
-OUTPUT=ERR2304566_3q29_1M_final.bam METRICS_FILE=ERR2304566_dupl_metrics.txt &&
+OUTPUT=ERR2304566_subset_3q29_1M_final.bam METRICS_FILE=ERR2304566_dupl_metrics.txt &&
 ```
 ----
 :question: :question: :question: :question: **Questions**  
 
-* Index ERR2304566_3q29_1M_final.bam file  
+* Index ERR2304566_subset_3q29_1M_final.bam file  
 ----
 
 ## BAM QC with qualimap  
@@ -431,7 +431,7 @@ qualimap &
 You can then proceed to upload your bam file by selecting a New Analysis in the File panel,    
 or you can produce an html report for your final bam using the command line.
 
-Here blow the command line for one sample:  
+Here below the command line for one sample, using the full alignment:  
 ```
 qualimap bamqc \
 	-bam ~/Documents/SRS_bwa_bam_files/ERR2304566_3q29_1M_final.bam \
