@@ -54,13 +54,13 @@ A tar archive containing all the files needed for this practical
 is available for download [here](https://drive.google.com/file/d/1-Mebr-tAr9V1JVX3BTADAZx2HVIwZwcr/view?usp=sharing).  
 **Create a directory to use for this practical**, move into it using `cd` and copy the tar archive there using this command:  
 ```
-cp -r mv ~/Downloads/EBI_NGSBioinfo_yeast.tar .
+mv ~/Downloads/readsQC.tar .
 ```
 
 **Please DO NOT work in any shared directory. If unsure, use `pwd` to check in which directory you are.**  
 You can then open this file using the command:  
 ```
-tar -xvf EBI_NGSBioinfo_yeast.tar
+tar -xvf readsQC.tar
 ```
 
 You should now find a folder called **VariantCalling** containing read data 
