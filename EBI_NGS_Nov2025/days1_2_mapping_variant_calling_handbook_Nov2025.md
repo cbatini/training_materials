@@ -1,4 +1,4 @@
-# NGS data: from initial QC to a ready-to-analyse variant set.  
+# NGS short-read data: from quality control to variant calling for SNPs and indels.  
 ### Chiara Batini  
 ### Genome bioinformatics: from short- to long-read sequencing  
 ### 17-21 November 2025  
@@ -96,17 +96,14 @@ will help direct the downstream trimming and adapter removal steps:
 **Trimmomatic** is a java tool for performing a range of trimming tasks 
 on Illumina paired end and single end read data. The manual can be found [here](https://github.com/usadellab/Trimmomatic/blob/main/README.md). 
 
-Go back to the overrepresented sequences module of FastQC. 
+Go back to the *Overrepresented sequences* module of FastQC. 
 This is where FastQC would tell you if a significant proportion (>1%) 
 of your reads are contaminated with adapter sequences. As you can see from 
 the *Possible Source* column, FastQC has found a number of reads contaminated 
 with different Illumina primer and adapter sequences, so we will run Trimmomatic to remove them.  
 
 Trimmomatic needs a fasta file containing the sequences you want to trim from your data; 
-this can be created by using fasta files provided that contain the standard Illumina adapter 
-and primer sequences or it can be customised. In this case we will use the prepared 
-`primers_adapters.fa` file that contains the sequences indicated in FastQC and their 
-reverse complement sequences.    
+this can be created by using fasta files [provided](https://github.com/usadellab/Trimmomatic/tree/main/adapters) that contain the standard Illumina adapter and primer sequences or it can be customised. In this case we will use the file I prepared `primers_adapters.fa` that contains the sequences indicated in FastQC and their reverse complement sequences.    
 
 for lane1
 ```
@@ -142,7 +139,7 @@ The parameters used in this command are defined as follows:
 | lane1/s-7-2.unpaired.fastq | unpaired trimmed output fastq file for right reads |
 | ILLUMINACLIP | parameters for the adapter clipping |
 |   primers_adapters.fa | text file of adapter sequences to search for |
-|   :2:30:10 | adapter-read alignment settings - see manual for explanation |
+|   :2:30:10 | adapter-read alignment settings - see [manual]https://github.com/usadellab/Trimmomatic/blob/main/README.md) for explanation |
 |   MINLEN:36 | delete reads trimmed below length MINLEN |
 ----
 :question: :question: :question: :question: **Questions**  
@@ -197,7 +194,7 @@ The parameters used in this command are defined as follows:
 | lane1/s-7-1.trim.unpaired.fastq | unpaired trimmed output fastq file for right reads |
 | LEADING:3 | Trim 5’ bases with quality score < 3 |
 | TRAILING:3 | Trim 3’ bases with quality score < 3 |
-| SLIDINGWINDOW:4:15 | sliding window trimming - see manual for explanation |
+| SLIDINGWINDOW:4:15 | sliding window trimming - see [manual]https://github.com/usadellab/Trimmomatic/blob/main/README.md) for explanation |
 | MINLEN:36 | delete reads trimmed below length MINLEN |
 
 
@@ -236,7 +233,7 @@ bwa index -a is Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa
 linear-time algorithm. It requires 5.37N memory where N is the size of the database. 
 IS is moderately fast, but does not work with database larger than 2GB. 
 IS is the default algorithm due to its simplicity. 
-For the whole human genome you would need to use the algorithm implemented in BWT-SW. 
+For the whole human genome you would need to use `-a bwtsw`. 
 
 **picard dictionary**
 ```
@@ -268,7 +265,7 @@ Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
 lane1/s-7-1.trim.paired.fastq lane1/s-7-2.trim.paired.fastq > lane1.sam
 ```
 
-Options used (see bwa manual for more options):  
+Options used (see [bwa manual](https://bio-bwa.sourceforge.net/bwa.shtml) for more options):  
 
 * `-R`: Add read group. A read group is a set of reads that were 
 generated from a single run/lane/chip of a sequencing instrument. 
@@ -357,7 +354,7 @@ which samtools command would you use?
 
 ## BAM refinement  
 
-BAM refinement has three steps:  
+Historically BAM refinement had three steps:  
 
 1. local realignment  
 2. base quality recalibration  
@@ -399,7 +396,7 @@ qualimap &
 ```  
 
 You can then proceed to upload your bam file by selecting a New Analysis in the File panel,    
-or you can produce an html report for your final bam:  
+or you can produce an html report for your final bam using this command:  
 ```
 qualimap bamqc -bam library_final.bam -outdir qualimap_report
 ```  
@@ -477,7 +474,7 @@ Options used:
 
 
 ## BAM visualisation  
-We will extract mtDNA from final the BAM to have a smaller file to visualise.
+You can extract the mitochondrial DNA from final the BAM to have a smaller file to visualise, or you cna try and use your final library bam file directly.
 ```
 samtools view -bh -o mito.bam library_final.bam Mito
 ```  
@@ -488,9 +485,9 @@ samtools view -bh -o mito.bam library_final.bam Mito
 * Do you know why we have used Mito to extract the mtDNA? Check your dictionary or your bam header.  
 ----
 
-We will use IGV to visualise our alignment and, as it is installed on this container, you can just type:
+We will use IGV to visualise our alignment and, as it is installed on this virtual machine, you can just type:
 ```
-igv &
+igv.sh
 ```  
 
 However, it is good to know that you can use the java web start version of IGV.  
@@ -646,6 +643,8 @@ in both vcf files (B) or the first vcf file (1) or the second vcf file(2).
 
 
 ## Variant filtering  
+
+# Filtering using depth of coverage  
 We will use VCFtools to filter variants from our vcf files. 
 The aim of VCFtools is to provide easily accessible methods 
 for working with complex genetic variation data in the form of VCF files. 
@@ -666,12 +665,12 @@ Now use vcftools again with the same filters but with a different command.
 **This uses DP in the FORMAT field!**  
 ```
 vcftools \
---vcf gatk_variants_raw_I_bq20_mq50_SNP.vcf \
---minDP 3 \
---minQ 20 \
---out gatk_variants_I_flt2 \
---recode \
---recode-INFO-all
+	--vcf gatk_variants_raw_I_bq20_mq50_SNP.vcf \
+	--minDP 3 \
+	--minQ 20 \
+	--out gatk_variants_I_flt2 \
+	--recode \
+	--recode-INFO-all
 ```
 
 As it is working on the data per sample, it substitutes the individual genotypes 
@@ -698,17 +697,48 @@ of these two commands.
 	```
 	+ Can you understand what this command does?  
 ----
+
+# Filtering using more annotations  
+We have seen that GATK reccommends using VQSR if you have enough samples.  
+If not, there are some reccommndations using hard-filtering, 
+including several annotations.  
+
+Here an example of how to do this.  
+
+```
+gatk VariantFiltration \
+   -R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+   -V gatk_variants_raw_I_bq20_mq50.vcf \
+   -O gatk_variants_raw_I_bq20_mq50.filtered.vcf \
+   --filter-name "QD" \
+   --filter-expression "QD < 2.0" \
+   --filter-name "MQ" \
+   --filter-expression "MQ < 40.0" \
+   --filter-name "FS" \
+   --filter-expression "FS > 60.0" \
+   --filter-name "SOR" \
+   --filter-expression "SOR > 3.0" \
+   --filter-name "MQRankSum" \
+   --filter-expression "MQRankSum < -12.5" \
+   --filter-name "ReadPosRankSum" \
+   --filter-expression "ReadPosRankSum < -8.0"  
+   
+   
+cat gatk_variants_raw_I_bq20_mq50.filtered.vcf | \
+	grep -v '#' | \
+	cut -f 7 | \
+	sort | \
+	uniq -c
+```
+
+
+
 **EXTRA**  
 There are a couple of extra activities you may want to try at this point:  
 
-* you could compare your results so far with another caller:  
-	+ Can you work out the correct command to run samtools mpileup + bcftools call?  
-	+ You can then compare the vcf output with what we have done so 
-	far to explore the difference (vcftools).  
 * you could filter your vcf files on additional metrics using vcftools:  
-	+ What other metrics would you add and why? Discuss this win your breakout room.  
-	+ Can you write the command for filtering variants in gatk?  
-	
+	+ What other metrics would you add and why? Discuss this with those around you.  
+* you could run the extra exercise explained below  
 	
 	
 
@@ -728,12 +758,24 @@ You can then unzip this file using the command:
 unzip extra_exercise.zip
 ```
 
-You should now find a folder called **VariantCalling** containing read data 
-(in folder fastq) and a reference genome (rCRS.fa).  
+You should now find a folder called **extra_exercise** containing read data 
+(in subfolder fastq) and a reference genome (rCRS.fa).  
 
+Here below a list of commands that can help you.  
+You can find the resources needed to run the VQSR command [here](https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&pli=1&prefix=&forceOnObjectsSortingFiltering=false). To access this you need to be logged in with a google account.  
+
+-----
+:question: :question: :question: :question: **Questions**  
+
+* Can you follow what each command does and why it is needed?  
+* Would you do anything differently?  
+* Can you appreciate the difference between this approach and what we did when using yeast data?  
+-----
 
 
 ```
+cd extra_exercise 
+
 samtools faidx rCRS.fa
 
 bwa index -a is rCRS.fa 
@@ -746,31 +788,25 @@ ls fastq/ | cut -f 1 -d "_" | uniq > sample_names
 
 mkdir bam_files
 
-
-
 for sample in $(cat sample_names)
 do
+	bwa mem -R '@RG\tID:'"$sample"'\tLB:library\tPL:Illumina\tPU:lane\tSM:'"$sample"'' \
+	rCRS.fa \
+	fastq/${sample}_R1.fastq.gz fastq/${sample}_R2.fastq.gz | \
+	samtools view -b - | samtools sort - -o bam_files/${sample}_sorted.bam  && 
 
-bwa mem -R '@RG\tID:'"$sample"'\tLB:library\tPL:Illumina\tPU:lane\tSM:'"$sample"'' \
-rCRS.fa \
-fastq/${sample}_R1.fastq.gz fastq/${sample}_R2.fastq.gz | \
-samtools view -b - | samtools sort - -o bam_files/${sample}_sorted.bam  && 
-
-samtools index bam_files/${sample}_sorted.bam 
-
+	samtools index bam_files/${sample}_sorted.bam 
 done
 
 mkdir gvcf_files
 
 for sample in $(cat sample_names)
 do
-
-gatk HaplotypeCaller  \
-   -R rCRS.fa \
-   -I bam_files/${sample}_sorted.bam  \
-   -O gvcf_files/${sample}.g.vcf.gz \
-   -ERC GVCF
-
+	gatk HaplotypeCaller  \
+		-R rCRS.fa \
+		-I bam_files/${sample}_sorted.bam  \
+		-O gvcf_files/${sample}.g.vcf.gz \
+		-ERC GVCF
 done
 
 gatk GenomicsDBImport \
@@ -803,6 +839,61 @@ gatk GenotypeGVCFs \
 	-O all_samples.vcf.gz
 
 
+gatk VariantFiltration \
+   -R rCRS.fa \
+   -V all_samples.vcf.gz \
+   -O all_samples.filered.vcf.gz \
+   --filter-name "QD" \
+   --filter-expression "QD < 2.0" \
+   --filter-name "MQ" \
+   --filter-expression "MQ < 40.0" \
+   --filter-name "FS" \
+   --filter-expression "FS > 60.0" \
+   --filter-name "SOR" \
+   --filter-expression "SOR > 3.0" \
+   --filter-name "MQRankSum" \
+   --filter-expression "MQRankSum < -12.5" \
+   --filter-name "ReadPosRankSum" \
+   --filter-expression "ReadPosRankSum < -8.0"  
+```
+
+
+An example of how to run VQSR using the same annotations as above.  
+```
+
+
+zcat hapmap_3.3.b37.vcf.gz | sed 's/MT/NC_012920.1_rCRS/' > hapmap_3.3.b37.mtname.vcf 
+
+gatk IndexFeatureFile \
+	--input hapmap_3.3.b37.mtname.vcf 
+
+
+gatk VariantRecalibrator \
+    -V all_samples.vcf.gz \
+    --trust-all-polymorphic \
+    -tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.8 -tranche 99.6 -tranche 99.5 -tranche 99.4 -tranche 99.3 -tranche 99.0 -tranche 98.0 -tranche 97.0 -tranche 90.0 \
+    -an QD -an MQ -an FS -an SOR -an MQRankSum -an ReadPosRankSum \
+    -mode SNP \
+	-resource:hapmap,known=false,training=true,truth=true,prior=15 hapmap_3.3.b37.mtname.vcf \
+    -O all_samples_snps.recal \
+    --tranches-file all_samples_snps.tranches
+	
+	
+	
+--resource:hapmap,known=false,training=true,truth=true,prior=15.0 /path/to/hapmap_file.vcf	
+	
+gatk --java-options "-Xmx5g -Xms5g" \
+    ApplyVQSR \
+    -V all_samples_snps.recalibrated.vcf.gz \
+    --recal-file all_samples_snps.recal \
+    --tranches-file all_samples_snps.tranches \
+    --truth-sensitivity-filter-level 99.7 \
+    --create-output-variant-index true \
+    -mode SNP \
+    -O snp.recalibrated.vcf.gz \
+    # -resource:omni,known=false,training=true,truth=true,prior=12:1000G_omni2.5.hg38.vcf.gz \
+    # -resource:1000G,known=false,training=true,truth=false,prior=10:1000G_phase1.snps.high_confidence.hg38.vcf.gz \
+    # -resource:dbsnp,known=true,training=false,truth=false,prior=7:Homo_sapiens_assembly38.dbsnp138.vcf \
 ```
 
 
