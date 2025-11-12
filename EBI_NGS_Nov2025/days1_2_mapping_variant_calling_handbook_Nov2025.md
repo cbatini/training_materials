@@ -762,7 +762,7 @@ You should now find a folder called **extra_exercise** containing read data
 (in subfolder fastq) and a reference genome (rCRS.fa).  
 
 Here below a list of commands that can help you.  
-You can find the resources needed to run the VQSR command [here](https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&pli=1&prefix=&forceOnObjectsSortingFiltering=false). To access this you need to be logged in with a google account.  
+
 
 -----
 :question: :question: :question: :question: **Questions**  
@@ -859,6 +859,9 @@ gatk VariantFiltration \
 
 
 An example of how to run VQSR using the same annotations as above.  
+
+
+You can find the resources needed to run the VQSR command [here](https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&pli=1&prefix=&forceOnObjectsSortingFiltering=false). To access this you need to be logged in with a google account.  
 ```
 
 
