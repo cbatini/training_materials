@@ -700,10 +700,10 @@ of these two commands.
 
 # Filtering using more annotations  
 We have seen that GATK reccommends using VQSR if you have enough samples.  
-If not, there are some reccommndations using hard-filtering, 
+If not, there are some reccommendations using hard-filtering, 
 including several annotations.  
 
-Here an example of how to do this.  
+Here an example of how to do this, includign a simple bash command to extract the information from the FILTER field.  
 
 ```
 gatk VariantFiltration \
@@ -736,8 +736,8 @@ cat gatk_variants_raw_I_bq20_mq50.filtered.vcf | \
 **EXTRA**  
 There are a couple of extra activities you may want to try at this point:  
 
-* you could filter your vcf files on additional metrics using vcftools:  
-	+ What other metrics would you add and why? Discuss this with those around you.  
+* you could filter your vcf files in a different way; you could use additional metrcis, or a subset of metrics, or different thresholds for the same metrics, with vcftools or gatk:  
+	+ What would you do differently? Discuss this with those around you.  
 * you could run the extra exercise explained below  
 	
 	
@@ -767,8 +767,8 @@ Here below a list of commands that can help you.
 -----
 :question: :question: :question: :question: **Questions**  
 
-* Can you follow what each command does and why it is needed?  
-* Would you do anything differently?  
+* Can you follow what each command does and why it is needed? Use a text editor to comment the commands.    
+* Have I missed anything out? Would you do anything differently?  
 * Can you appreciate the difference between this approach and what we did when using yeast data?  
 -----
 
@@ -784,6 +784,8 @@ picard CreateSequenceDictionary \
 R=rCRS.fa \
 O=rCRS.dict
 
+
+
 ls fastq/ | cut -f 1 -d "_" | uniq > sample_names
 
 mkdir bam_files
@@ -797,6 +799,8 @@ do
 
 	samtools index bam_files/${sample}_sorted.bam 
 done
+
+
 
 mkdir gvcf_files
 
@@ -839,6 +843,7 @@ gatk GenotypeGVCFs \
 	-O all_samples.vcf.gz
 
 
+
 gatk VariantFiltration \
    -R rCRS.fa \
    -V all_samples.vcf.gz \
@@ -856,51 +861,6 @@ gatk VariantFiltration \
    --filter-name "ReadPosRankSum" \
    --filter-expression "ReadPosRankSum < -8.0"  
 ```
-
-
-An example of how to run VQSR using the same annotations as above.  
-
-
-You can find the resources needed to run the VQSR command [here](https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&pli=1&prefix=&forceOnObjectsSortingFiltering=false). To access this you need to be logged in with a google account.  
-```
-
-
-zcat hapmap_3.3.b37.vcf.gz | sed 's/MT/NC_012920.1_rCRS/' > hapmap_3.3.b37.mtname.vcf 
-
-gatk IndexFeatureFile \
-	--input hapmap_3.3.b37.mtname.vcf 
-
-
-gatk VariantRecalibrator \
-    -V all_samples.vcf.gz \
-    --trust-all-polymorphic \
-    -tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.8 -tranche 99.6 -tranche 99.5 -tranche 99.4 -tranche 99.3 -tranche 99.0 -tranche 98.0 -tranche 97.0 -tranche 90.0 \
-    -an QD -an MQ -an FS -an SOR -an MQRankSum -an ReadPosRankSum \
-    -mode SNP \
-	-resource:hapmap,known=false,training=true,truth=true,prior=15 hapmap_3.3.b37.mtname.vcf \
-    -O all_samples_snps.recal \
-    --tranches-file all_samples_snps.tranches
-	
-	
-	
---resource:hapmap,known=false,training=true,truth=true,prior=15.0 /path/to/hapmap_file.vcf	
-	
-gatk --java-options "-Xmx5g -Xms5g" \
-    ApplyVQSR \
-    -V all_samples_snps.recalibrated.vcf.gz \
-    --recal-file all_samples_snps.recal \
-    --tranches-file all_samples_snps.tranches \
-    --truth-sensitivity-filter-level 99.7 \
-    --create-output-variant-index true \
-    -mode SNP \
-    -O snp.recalibrated.vcf.gz \
-    # -resource:omni,known=false,training=true,truth=true,prior=12:1000G_omni2.5.hg38.vcf.gz \
-    # -resource:1000G,known=false,training=true,truth=false,prior=10:1000G_phase1.snps.high_confidence.hg38.vcf.gz \
-    # -resource:dbsnp,known=true,training=false,truth=false,prior=7:Homo_sapiens_assembly38.dbsnp138.vcf \
-```
-
-
-
 
 
 
