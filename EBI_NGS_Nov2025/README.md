@@ -10,16 +10,15 @@ All materials are under a [CC BY 4.0 licence](https://creativecommons.org/licens
 
 #### Day 1:  
 
-* [**Overview of NGS technology** slides]()  
-* [**Quality control** slides]()  
-* [**Read mapping** slides]()  
+* [**Quality control** slides](https://docs.google.com/presentation/d/1xUEywEXu8aF78p98ZZ1LGI97EkjyjqP2OLdAZGKZvXE/edit?usp=sharing)  
+* [**Read mapping** slides](https://docs.google.com/presentation/d/1KhWvz5reC2CczVy1i2dvulmLiB59odSoSgBH5ZVV9ZA/edit?usp=sharing)  
 * [**Before starting** the practical session slides](https://docs.google.com/presentation/d/1ZsIGUJam1OqXfUox5WT2OSs2Z7ZUwPrJqAvC64aenow/edit?usp=sharing)  
 * [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2025/days1_2_mapping_variant_calling_handbook_Nov2025.md)  
   
 #### Day 2:  
 
-* [**SAM/BAM file formats – BAM refinement, QC, and visualisation** slides]()  
-* [**Variant calling and filtering** slides]()   
+* [**SAM/BAM file formats – BAM refinement, QC, and visualisation** slides](https://docs.google.com/presentation/d/17hMIVt5IUgtHIjBwYRrIr7cliBNhTUAMPBWHLjQGShM/edit?usp=sharing)  
+* [**Variant calling and filtering** slides](https://docs.google.com/presentation/d/1q6rfHCotxqkXx3plof9Sw-asEwMz2rsfrUPoY4eNf4o/edit?usp=sharing)   
 * [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2025/days1_2_mapping_variant_calling_handbook_Nov2025.md)  
 
 
