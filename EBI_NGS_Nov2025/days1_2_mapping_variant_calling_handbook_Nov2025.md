@@ -28,10 +28,10 @@ Characteristics of the experiment:
 ## Getting the data  
 
 A tar archive containing all the files needed for this practical (EBI_NGSBioinfo_yeast.tar) 
-is available in the home directory (/home/training/chiara/).  
+is available in the home directory (/home/training/chiara/archive/).  
 **Create a directory to use for this practical**, move into it using `cd` and copy the tar archive there using this command:  
 ```
-cp /home/training/chiara/EBI_NGSBioinfo_yeast.tar .
+cp /home/training/chiara/archive/EBI_NGSBioinfo_yeast.tar .
 ```
 
 **Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
@@ -746,10 +746,10 @@ There are a couple of extra activities you may want to try at this point:
 
 
 A tar archive containing all the files needed for this exercise (extra_exercise.zip) 
-is available in the home directory (/home/training/chiara/).  
+is available [here](https://drive.google.com/file/d/16b48OPq-uKcs1tLlPEjpn-qvVrkMu7dO/view?usp=share_link).  
 **Create a directory to use for this practical**, move into it using `cd` and copy the zipfile there using this command:  
 ```
-cp /home/training/chiara/extra_exercise.zip .
+cp /home/training/Downloads/extra_exercise.zip .
 ```
 
 **Please DO NOT work in the shared directory. If unsure, use `pwd` to check in which directory you are.**  
