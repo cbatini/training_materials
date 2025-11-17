@@ -194,7 +194,7 @@ The parameters used in this command are defined as follows:
 | lane1/s-7-1.trim.unpaired.fastq | unpaired trimmed output fastq file for right reads |
 | LEADING:3 | Trim 5’ bases with quality score < 3 |
 | TRAILING:3 | Trim 3’ bases with quality score < 3 |
-| SLIDINGWINDOW:4:15 | sliding window trimming - see [manual]https://github.com/usadellab/Trimmomatic/blob/main/README.md) for explanation |
+| SLIDINGWINDOW:4:15 | sliding window trimming - see [manual](https://github.com/usadellab/Trimmomatic/blob/main/README.md) for explanation |
 | MINLEN:36 | delete reads trimmed below length MINLEN |
 
 
