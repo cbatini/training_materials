@@ -139,7 +139,7 @@ The parameters used in this command are defined as follows:
 | lane1/s-7-2.unpaired.fastq | unpaired trimmed output fastq file for right reads |
 | ILLUMINACLIP | parameters for the adapter clipping |
 |   primers_adapters.fa | text file of adapter sequences to search for |
-|   :2:30:10 | adapter-read alignment settings - see [manual]https://github.com/usadellab/Trimmomatic/blob/main/README.md) for explanation |
+|   :2:30:10 | adapter-read alignment settings - see [manual](https://github.com/usadellab/Trimmomatic/blob/main/README.md) for explanation |
 |   MINLEN:36 | delete reads trimmed below length MINLEN |
 ----
 :question: :question: :question: :question: **Questions**  
