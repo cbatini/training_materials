@@ -739,6 +739,7 @@ There are a couple of extra activities you may want to try at this point:
 * you could filter your vcf files in a different way; you could use additional metrcis, or a subset of metrics, or different thresholds for the same metrics, with vcftools or gatk:  
 	+ What would you do differently? Discuss this with those around you.  
 * you could run the extra exercise explained below  
+* you could try and run gatk in DRAGEN mode  
 	
 	
 
@@ -863,7 +864,36 @@ gatk VariantFiltration \
 ```
 
 
+## GATK in DRAGEN mode  
+Please proceed with caution as this is only an attempt at trying 
+GATK-DRAGEN. It would be interesting to check the difference with GATK HC 
+if you have time.  
 
+```
+gatk ComposeSTRTableFile \
+    -R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+    -O str_table.tsv
+	
+gatk CalibrateDragstrModel \
+    -R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+    -I library_final.bam \
+    -str str_table.tsv \
+    -O dragstr_model.txt
+	
+gatk HaplotypeCaller \
+    -R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
+    -I library_final.bam \
+    -L I \
+    -O gatk_variants_raw_I_dragen.vcf \
+    --dragen-mode true \
+    --dragstr-params-path dragstr_model.txt
+	
+gatk VariantFiltration \
+      -V gatk_variants_raw_I_dragen.vcf \
+      --filter-expression "QUAL < 10.4139" \
+      --filter-name "DRAGENHardQUAL" \
+      -O gatk_variants_raw_I_dragen.filtered.vcf
+```
 
 
 
