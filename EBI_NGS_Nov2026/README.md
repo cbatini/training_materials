@@ -10,18 +10,17 @@ All materials are under a [CC BY 4.0 licence](https://creativecommons.org/licens
 
 #### Day 1:  
 
-* [**Quality control** slides](https://docs.google.com/presentation/d/1xUEywEXu8aF78p98ZZ1LGI97EkjyjqP2OLdAZGKZvXE/edit?usp=sharing)  
-* [**Read mapping** slides](https://docs.google.com/presentation/d/1KhWvz5reC2CczVy1i2dvulmLiB59odSoSgBH5ZVV9ZA/edit?usp=sharing)  
-* [**Before starting** the practical session slides](https://docs.google.com/presentation/d/1ZsIGUJam1OqXfUox5WT2OSs2Z7ZUwPrJqAvC64aenow/edit?usp=sharing)  
-* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2025/days1_2_mapping_variant_calling_handbook_Nov2025.md)  
+* [**Quality control** slides](https://docs.google.com/presentation/d/1poVYV40lOWso-szfohLN0X7JjFgCIzBfIOpb-KHKRik/edit?usp=sharing)  
+* [**Read mapping** slides](https://docs.google.com/presentation/d/1MVpzwdJMX0iGkAXETGOxgqIp7DoKK77PwC2xFLDjLlQ/edit?usp=sharing)  
+* [**Before starting** the practical session slides](https://docs.google.com/presentation/d/1g3V4JTiHSnHN1CCYTc9iHw_sQQn5P3FobaQPb-op-rM/edit?usp=sharing)  
+* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2026/days1_2_mapping_variant_calling_handbook_Nov2026.md)  
   
 #### Day 2:  
 
-* [**SAM/BAM file formats – BAM refinement, QC, and visualisation** slides](https://docs.google.com/presentation/d/17hMIVt5IUgtHIjBwYRrIr7cliBNhTUAMPBWHLjQGShM/edit?usp=sharing)  
-* [**Variant calling and filtering** slides](https://docs.google.com/presentation/d/1q6rfHCotxqkXx3plof9Sw-asEwMz2rsfrUPoY4eNf4o/edit?usp=sharing)   
-* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2025/days1_2_mapping_variant_calling_handbook_Nov2025.md)  
-
-
+* [**SAM/BAM file formats – BAM refinement, QC, and visualisation** slides](https://docs.google.com/presentation/d/1JhTotJHMpFgDRyzpVPYT_IJmfoHg4k_emIM6Fp5Fq7E/edit?usp=sharing)  
+* [**Variant calling and filtering** slides](https://docs.google.com/presentation/d/16-kyW8PvH0PKsofdpMYdRbzbsrM633mC_HjsMHYOczQ/edit?usp=sharing)   
+* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2026/days1_2_mapping_variant_calling_handbook_Nov2026.md)  
+ 
 #### Data:  
 
 * [yeast dataset for practical sessions](https://drive.google.com/file/d/1JlfiNTWTsCjn1WsL5e1F32oJX9MKl1Yw/view?usp=share_link)  
@@ -33,4 +32,4 @@ All materials are under a [CC BY 4.0 licence](https://creativecommons.org/licens
 
 #### Solutions:  
 
-* [Solutions to exercises from Chiara](https://docs.google.com/document/d/1bYV5SVb4AJlEFpNLqw1I_X2ZzHXP8zhpT-mLWIoDnAQ/edit?usp=sharing)  
+* [Solutions to exercises from Chiara](https://docs.google.com/document/d/1bDd2fLSiwzc_MIcTQ4zGmFcfX7g5-IUmAg9lQ4Spxho/edit?usp=sharing)  
