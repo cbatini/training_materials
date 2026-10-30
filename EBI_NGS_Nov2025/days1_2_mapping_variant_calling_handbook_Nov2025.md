@@ -884,6 +884,8 @@ gatk HaplotypeCaller \
     -R Saccharomyces_cerevisiae.EF4.68.dna.toplevel.fa \
     -I library_final.bam \
     -L I \
+	-mbq 20 \
+	--minimum-mapping-quality 50 \
     -O gatk_variants_raw_I_dragen.vcf \
     --dragen-mode true \
     --dragstr-params-path dragstr_model.txt
