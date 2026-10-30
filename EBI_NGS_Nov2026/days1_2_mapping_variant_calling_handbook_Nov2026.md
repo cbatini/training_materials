@@ -28,7 +28,7 @@ Characteristics of the experiment:
 ## Getting the data  
 
 A tar archive containing all the files needed for this practical (EBI_NGSBioinfo_yeast.tar) 
-is available in the home directory (/home/training/chiara/archive/).  
+is available in the home directory (/home/training/chiara/).  
 **Create a directory to use for this practical**, move into it using `cd` and copy the tar archive there using this command:  
 ```
 cp /home/training/chiara/EBI_NGSBioinfo_yeast.tar .
@@ -899,6 +899,21 @@ gatk VariantFiltration \
       --filter-expression "QUAL < 10.4139" \
       --filter-name "DRAGENHardQUAL" \
       -O gatk_variants_raw_I_dragen.filtered.vcf
+    
+gatk SelectVariants \
+    -V gatk_variants_raw_I_bq20_mq50.filtered.vcf \
+    --exclude-filtered true \
+    -O gatk_hc_PASS.vcf.gz
+    
+gatk SelectVariants \
+    -V gatk_variants_raw_I_dragen.filtered.vcf \
+    --exclude-filtered true \
+    -O gatk_dragen_PASS.vcf.gz
+    
+vcftools \
+    --gzvcf gatk_hc_PASS.vcf.gz \
+    --gzdiff gatk_dragen_PASS.vcf.gz \
+    --diff-site --out compare_dragen
 ```
 
 
