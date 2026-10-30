@@ -1,5 +1,5 @@
 ## Genome bioinformatics: from short- to long-read sequencing  
-### 17-21 November 2025  
+### 16-20 November 2026  
 
 You can find here the links to slides, handbook for the practical sessions, 
 and any other useful resource for days 1 and 2 of the EMBL-EBI 
