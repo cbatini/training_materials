@@ -4,13 +4,13 @@
 You can find here the links to slides, handbook for the practical sessions, 
 and any other useful resource for days 1 and 2 of the EMBL-EBI 
 **Genome bioinformatics: from short- to long-read sequencing** 
-2025 course.  
+2026 course.  
 All materials are under a [CC BY 4.0 licence](https://creativecommons.org/licenses/by/4.0/).  
 
 
 #### Day 1:  
 
-* [**Quality control** slides](https://docs.google.com/presentation/d/1poVYV40lOWso-szfohLN0X7JjFgCIzBfIOpb-KHKRik/edit?usp=sharing)  
+* [**Quality control** slides](https://docs.google.com/presentation/d/1Raj57ZNVaxwoiccdisr0n1yfdqUPxCQ-x4xxp0nYwo8/edit?usp=sharing)  
 * [**Read mapping** slides](https://docs.google.com/presentation/d/1MVpzwdJMX0iGkAXETGOxgqIp7DoKK77PwC2xFLDjLlQ/edit?usp=sharing)  
 * [**Before starting** the practical session slides](https://docs.google.com/presentation/d/1g3V4JTiHSnHN1CCYTc9iHw_sQQn5P3FobaQPb-op-rM/edit?usp=sharing)  
 * [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2026/days1_2_mapping_variant_calling_handbook_Nov2026.md)  
@@ -19,7 +19,7 @@ All materials are under a [CC BY 4.0 licence](https://creativecommons.org/licens
 
 * [**SAM/BAM file formats – BAM refinement, QC, and visualisation** slides](https://docs.google.com/presentation/d/1JhTotJHMpFgDRyzpVPYT_IJmfoHg4k_emIM6Fp5Fq7E/edit?usp=sharing)  
 * [**Variant calling and filtering** slides](https://docs.google.com/presentation/d/16-kyW8PvH0PKsofdpMYdRbzbsrM633mC_HjsMHYOczQ/edit?usp=sharing)   
-* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2026/days1_2_mapping_variant_calling_handbook_Nov2026.md)  
+* [Handbook for the practical sessions](https://github.com/cbatini/training_materials/blob/main/EBI_NGS_Nov2026/days1_2_mapping_variant_calling_handbook_Nov2026.md#bam-refinement)  
  
 #### Data:  
 
