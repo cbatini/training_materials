@@ -107,7 +107,7 @@ this can be created by using fasta files [provided](https://github.com/usadellab
 
 for lane1
 ```
-java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
+/usr/lib/jvm/java-25-openjdk-amd64/bin/java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
 -phred33 -threads 1 -trimlog \
 lane1/trimm_logfile lane1/s-7-1.fastq lane1/s-7-2.fastq \
 lane1/s-7-1.paired.fastq lane1/s-7-1.unpaired.fastq \
@@ -117,7 +117,7 @@ ILLUMINACLIP:primers_adapters.fa:2:30:10 MINLEN:36
 
 for lane2
 ```
-java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
+/usr/lib/jvm/java-25-openjdk-amd64/bin/java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
 -phred33 -threads 1 -trimlog \
 lane2/trimm_logfile lane2/s-7-1.fastq lane2/s-7-2.fastq \
 lane2/s-7-1.paired.fastq lane2/s-7-1.unpaired.fastq \
@@ -160,7 +160,7 @@ The command below will carry out the trimming on the adapter trimmed fastq files
 
 for lane1
 ```
-java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
+/usr/lib/jvm/java-25-openjdk-amd64/bin/java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
 -phred33 -threads 1 -trimlog \
 lane1/trimm_logfile2 \
 lane1/s-7-1.paired.fastq lane1/s-7-2.paired.fastq \
@@ -171,7 +171,7 @@ LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 
 for lane2
 ```
-java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
+/usr/lib/jvm/java-25-openjdk-amd64/bin/java -jar /home/training/Applications/trimmomatic/trimmomatic-0.41.jar PE \
 -phred33 -threads 1 -trimlog \
 lane2/trimm_logfile2 \
 lane2/s-7-1.paired.fastq lane2/s-7-2.paired.fastq \
